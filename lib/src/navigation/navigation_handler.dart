@@ -19,6 +19,14 @@ class NavigationHandler {
     );
   }
 
+  void start() {
+    _navigator.onStart(_bloc);
+  }
+
+  void end() {
+    _navigator.onEnd(_bloc);
+  }
+
   void unmount() {
     _blocStreamSubscription?.cancel();
   }

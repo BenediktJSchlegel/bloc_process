@@ -13,3 +13,4 @@ export 'src/widgets/process_bloc_listener.dart';
 
 export 'src/route/stateless_bloc_route.dart';
 export 'src/route/stateful_bloc_route.dart';
+export 'src/route/bloc_route.dart';

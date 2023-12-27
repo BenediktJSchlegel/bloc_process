@@ -7,20 +7,20 @@ import '../navigation/navigation_handler.dart';
 import '../navigation/process_navigator.dart';
 
 class ProcessController<
-        TReturn,
         TEvent extends ProcessBlocEvent,
         TState extends ProcessBlocState,
+        TReturn,
         TBloc extends ProcessBloc<TEvent, TState, TReturn>,
         TNavigator extends ProcessNavigator<TBloc, TState>>
     extends BlocDependant<TBloc> {
   final NavigationHandler _navigationHandler;
   final void Function(TReturn value) _completedCallback;
 
-  ProcessController(
-    TBloc bloc,
-    TNavigator navigator,
-    void Function(TReturn value) completedCallback,
-  )   : _navigationHandler = NavigationHandler(navigator, bloc),
+  ProcessController({
+    required TBloc bloc,
+    required TNavigator navigator,
+    required void Function(TReturn value) completedCallback,
+  })  : _navigationHandler = NavigationHandler(navigator, bloc),
         _completedCallback = completedCallback,
         super(bloc) {
     _navigationHandler.mount(bloc.stream);
@@ -33,9 +33,12 @@ class ProcessController<
     _close();
   }
 
-  void start() {}
+  void start() {
+    _navigationHandler.start();
+  }
 
   void _close() {
+    _navigationHandler.end();
     _navigationHandler.unmount();
 
     bloc.close();
