@@ -40,10 +40,15 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     processController.start(
-        context, "This is the process input", _onRegistrationCompleted);
+      context,
+      "This is the process input",
+      _onRegistrationCompleted,
+    );
   }
 
-  void _onRegistrationCompleted(RegistrationProcessResult result) {}
+  void _onRegistrationCompleted(RegistrationProcessResult result) {
+    print("Done");
+  }
 
   @override
   Widget build(BuildContext context) {
