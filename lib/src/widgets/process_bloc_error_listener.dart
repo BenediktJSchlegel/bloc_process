@@ -9,7 +9,7 @@ class ProcessBlocErrorListener<TBloc extends ProcessBloc>
     extends StatefulWidget {
   final TBloc bloc;
   final Widget child;
-  final Function(ErrorEvent event) onErrorCallback;
+  final void Function(ErrorEvent event) onErrorCallback;
 
   const ProcessBlocErrorListener({
     super.key,

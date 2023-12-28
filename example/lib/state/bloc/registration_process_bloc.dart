@@ -9,6 +9,22 @@ class RegistrationProcessBloc extends ProcessBloc<RegistrationProcessEvent,
     RegistrationProcessState, RegistrationProcessResult> {
   RegistrationProcessBloc() : super(RegistrationProcessState.initial()) {
     on((RegistrationProcessEvent event,
-        Emitter<RegistrationProcessState> emit) {});
+        Emitter<RegistrationProcessState> emit) {
+      switch (event.runtimeType) {
+        case BasicInformationSubmittedEvent:
+          emit(RegistrationProcessState(
+              RegistrationProcessPages.regionSelection));
+          break;
+        case RegionSelectionSubmittedEvent:
+          emit(RegistrationProcessState(RegistrationProcessPages.password));
+          break;
+        case PasswordSubmittedEvent:
+          complete(RegistrationProcessResult());
+          break;
+        case ThrowErrorEvent:
+          emitError(ErrorEvent((event as ThrowErrorEvent).message));
+          break;
+      }
+    });
   }
 }
