@@ -16,3 +16,4 @@ export 'src/route/stateful_bloc_route.dart';
 export 'src/route/bloc_route.dart';
 
 export 'src/error/error_event.dart';
+export 'src/exceptions/process_already_started_error.dart';

@@ -5,8 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../result/registration_process_result.dart';
 
-class RegistrationProcessBloc extends ProcessBloc<RegistrationProcessEvent,
-    RegistrationProcessState, RegistrationProcessResult> {
+class RegistrationProcessBloc extends ProcessBloc<
+    String,
+    RegistrationProcessEvent,
+    RegistrationProcessState,
+    RegistrationProcessResult> {
   RegistrationProcessBloc() : super(RegistrationProcessState.initial()) {
     on((RegistrationProcessEvent event,
         Emitter<RegistrationProcessState> emit) {
@@ -26,5 +29,10 @@ class RegistrationProcessBloc extends ProcessBloc<RegistrationProcessEvent,
           break;
       }
     });
+  }
+
+  @override
+  initialize(String input) {
+    print(input);
   }
 }

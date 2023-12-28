@@ -1,0 +1,1 @@
+class ProcessAlreadyStartedError extends Error {}

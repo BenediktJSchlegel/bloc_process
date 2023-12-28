@@ -7,6 +7,7 @@ import '../navigation/registration_process_navigator.dart';
 import '../result/registration_process_result.dart';
 
 class RegistrationProcessController extends ProcessController<
+    String,
     RegistrationProcessEvent,
     RegistrationProcessState,
     RegistrationProcessResult,
@@ -14,7 +15,6 @@ class RegistrationProcessController extends ProcessController<
     RegistrationProcessNavigator> {
   RegistrationProcessController({
     required super.bloc,
-    required super.navigator,
-    required super.completedCallback,
+    required super.navigationBuilder,
   });
 }

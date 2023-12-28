@@ -36,11 +36,11 @@ class _MyHomePageState extends State<MyHomePage> {
     final RegistrationProcessBloc bloc = RegistrationProcessBloc();
     final processController = RegistrationProcessController(
       bloc: bloc,
-      navigator: RegistrationProcessNavigator(context, bloc),
-      completedCallback: _onRegistrationCompleted,
+      navigationBuilder: (ctx) => RegistrationProcessNavigator(ctx, bloc),
     );
 
-    processController.start();
+    processController.start(
+        context, "This is the process input", _onRegistrationCompleted);
   }
 
   void _onRegistrationCompleted(RegistrationProcessResult result) {}

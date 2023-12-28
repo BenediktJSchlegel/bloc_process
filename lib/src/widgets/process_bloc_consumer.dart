@@ -7,10 +7,12 @@ import '../../bloc_process.dart';
 import '../error/error_event.dart';
 
 class ProcessBlocConsumer<
-    TEvent extends ProcessBlocEvent,
-    TState extends ProcessBlocState,
-    TReturn,
-    TBloc extends ProcessBloc<TEvent, TState, TReturn>> extends StatefulWidget {
+        TInput,
+        TEvent extends ProcessBlocEvent,
+        TState extends ProcessBlocState,
+        TReturn,
+        TBloc extends ProcessBloc<TInput, TEvent, TState, TReturn>>
+    extends StatefulWidget {
   final Function(ErrorEvent event)? onErrorCallback;
   final TBloc bloc;
   final BlocListenerCondition<TState>? listenWhen;
@@ -30,15 +32,16 @@ class ProcessBlocConsumer<
 
   @override
   State<ProcessBlocConsumer> createState() =>
-      _ProcessBlocConsumerState<TEvent, TState, TReturn, TBloc>();
+      _ProcessBlocConsumerState<TInput, TEvent, TState, TReturn, TBloc>();
 }
 
 class _ProcessBlocConsumerState<
+        TInput,
         TEvent extends ProcessBlocEvent,
         TState extends ProcessBlocState,
         TReturn,
-        TBloc extends ProcessBloc<TEvent, TState, TReturn>>
-    extends State<ProcessBlocConsumer<TEvent, TState, TReturn, TBloc>> {
+        TBloc extends ProcessBloc<TInput, TEvent, TState, TReturn>>
+    extends State<ProcessBlocConsumer<TInput, TEvent, TState, TReturn, TBloc>> {
   StreamSubscription? _errorSubscription;
 
   @override
