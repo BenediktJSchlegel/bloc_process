@@ -4,3 +4,5 @@
 optional "transformer" function between chain steps
 
 chain as stream -> fires events with next process, transform, chainbreak, injected callback etc.
+
+if (callback) then breakout; else then next process;

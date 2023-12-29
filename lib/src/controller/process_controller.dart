@@ -48,9 +48,9 @@ class ProcessController<
   }
 
   void _onComplete(TReturn value) {
-    _completedCallback.call(value);
-
     _close();
+
+    _completedCallback.call(value);
   }
 
   void _close() {
