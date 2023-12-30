@@ -14,5 +14,9 @@ class RegistrationLink extends ProcessLink<
     RegistrationProcessBloc,
     RegistrationProcessNavigator,
     RegistrationProcessController> {
-  RegistrationLink(super.controller, {required super.transformer});
+  RegistrationLink(
+    super.controller, {
+    required super.inputTransformer,
+    required super.outputTransformer,
+  });
 }

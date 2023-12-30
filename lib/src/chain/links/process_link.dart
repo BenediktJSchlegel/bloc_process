@@ -15,8 +15,12 @@ class ProcessLink<
 
   ProcessLink(
     this._controller, {
-    required dynamic Function(TOutput output)? transformer,
-  }) : super(transformer);
+    required dynamic Function(TOutput output)? outputTransformer,
+    required TInput Function(dynamic input)? inputTransformer,
+  }) : super(
+          inputTransformer: inputTransformer,
+          outputTransformer: outputTransformer,
+        );
 
   @override
   void start(BuildContext context, TInput input) {
@@ -24,8 +28,8 @@ class ProcessLink<
   }
 
   void _onControllerCompleted(TOutput output) {
-    if (super.transformer != null) {
-      onEnd!.call(super.transformer!.call(output));
+    if (super.outputTransformer != null) {
+      onEnd!.call(super.outputTransformer!.call(output));
       return;
     }
 

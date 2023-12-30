@@ -54,13 +54,27 @@ class _MyHomePageState extends State<MyHomePage> {
       navigationBuilder: (ctx) => RegistrationProcessNavigator(ctx, three),
     );
 
-    final ProcessChain<String, String> chain = ProcessChain<String, String>(
+    final ProcessChain<String, RegistrationProcessResult> chain =
+        ProcessChain<String, RegistrationProcessResult>(
       context: context,
       onEndCallback: _onChainEnd,
       links: [
-        RegistrationLink(oneController, transformer: _transformLinkResult),
-        RegistrationLink(twoController, transformer: _transformLinkResult),
-        RegistrationLink(threeController, transformer: _transformLinkResult),
+        RegistrationLink(oneController,
+            outputTransformer: null, inputTransformer: null),
+        DecisionLink<RegistrationProcessResult, RegistrationProcessResult>(
+          condition: (input) => input.role == "Admin",
+          then: RegistrationLink(
+            twoController,
+            inputTransformer: (input) => "transformed",
+            outputTransformer: _transformLinkResult,
+          ),
+          elseThen: BreakoutLink<RegistrationProcessResult>(
+              inputTransformer: null, outputTransformer: null),
+          inputTransformer: null,
+          outputTransformer: null,
+        ),
+        BreakoutLink<RegistrationProcessResult>(
+            inputTransformer: null, outputTransformer: null),
       ],
     );
 

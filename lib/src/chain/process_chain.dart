@@ -1,3 +1,4 @@
+import 'package:bloc_process/bloc_process.dart';
 import 'package:bloc_process/src/helper/input_output_typed.dart';
 import 'package:flutter/widgets.dart';
 
@@ -35,7 +36,7 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
   }
 
   void _registerOnEnd(ChainLink link) {
-    link.onEnd = _onLinkCompleted;
+    link.onEnd = (dynamic out) => _onLinkCompleted(out, link is BreakoutLink);
   }
 
   void _next(dynamic lastOutput) {
@@ -45,10 +46,22 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
       throw Error(); // TODO: Change error
     }
 
+    if (_links[_index].inputTransformer != null) {
+      _links[_index].start(
+        _context,
+        _links[_index].inputTransformer!.call(lastOutput),
+      );
+    }
+
     _links[_index].start(_context, lastOutput);
   }
 
-  void _onLinkCompleted(dynamic output) {
+  void _onLinkCompleted(dynamic output, bool breakout) {
+    if (breakout) {
+      _onEndCallback.call(output);
+      return;
+    }
+
     if (_isLastLink()) {
       if (!isOutputType(output)) {
         throw Error(); // TODO: throw better error

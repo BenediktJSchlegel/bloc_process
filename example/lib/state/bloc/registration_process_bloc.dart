@@ -16,19 +16,28 @@ class RegistrationProcessBloc extends ProcessBloc<
       switch (event.runtimeType) {
         case BasicInformationSubmittedEvent:
           emit(RegistrationProcessState(
-              RegistrationProcessPages.regionSelection));
+              RegistrationProcessPages.regionSelection, state.role));
           break;
         case RegionSelectionSubmittedEvent:
-          emit(RegistrationProcessState(RegistrationProcessPages.password));
+          emit(RegistrationProcessState(
+              RegistrationProcessPages.password, state.role));
           break;
         case PasswordSubmittedEvent:
-          complete(RegistrationProcessResult());
+          complete(RegistrationProcessResult(state.role));
           break;
         case ThrowErrorEvent:
           emitError(ErrorEvent((event as ThrowErrorEvent).message));
           break;
+        case UserRoleChangedEvent:
+          _onUserRoleChanged(event as UserRoleChangedEvent, emit);
+          break;
       }
     });
+  }
+
+  void _onUserRoleChanged(
+      UserRoleChangedEvent event, Emitter<RegistrationProcessState> emit) {
+    emit(RegistrationProcessState(state.page, event.role));
   }
 
   @override

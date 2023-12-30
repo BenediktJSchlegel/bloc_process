@@ -11,12 +11,15 @@ class DecisionLink<TInput, TOutput> extends ChainLink<TInput, TOutput> {
     required bool Function(TInput input) condition,
     required ChainLink then,
     required ChainLink elseThen,
-    required dynamic Function(TOutput output)? transformer,
-    required void Function(dynamic output) onEnd,
+    required dynamic Function(TOutput output)? outputTransformer,
+    required TInput Function(dynamic input)? inputTransformer,
   })  : _condition = condition,
         _then = then,
         _elseThen = elseThen,
-        super(transformer);
+        super(
+          inputTransformer: inputTransformer,
+          outputTransformer: outputTransformer,
+        );
 
   @override
   void start(BuildContext context, TInput input) {
@@ -39,8 +42,8 @@ class DecisionLink<TInput, TOutput> extends ChainLink<TInput, TOutput> {
   }
 
   void _onCompleted(TOutput output) {
-    if (super.transformer != null) {
-      onEnd!.call(super.transformer!.call(output));
+    if (super.outputTransformer != null) {
+      onEnd!.call(super.outputTransformer!.call(output));
       return;
     }
 
