@@ -1,10 +1,17 @@
 import 'package:bloc_process/bloc_process.dart';
-import 'package:example/state/bloc/registration_process_bloc.dart';
-import 'package:example/state/chain/registration_link.dart';
-import 'package:example/state/controller/registration_process_controller.dart';
-import 'package:example/state/navigation/registration_process_navigator.dart';
-import 'package:example/state/result/registration_process_result.dart';
+import 'package:example/processes/registration/state/bloc/registration_process_bloc.dart';
+import 'package:example/processes/registration/state/chain/registration_link.dart';
+import 'package:example/processes/registration/state/controller/registration_process_controller.dart';
+import 'package:example/processes/registration/state/navigation/registration_process_navigator.dart';
+import 'package:example/processes/registration/state/result/registration_process_result.dart';
+import 'package:example/processes/showcase/showcase_link_input.dart';
+import 'package:example/processes/showcase/showcase_link_output.dart';
+import 'package:example/processes/showcase/state/bloc/showcase_bloc.dart';
+import 'package:example/processes/showcase/state/chain/showcase_link.dart';
+import 'package:example/processes/showcase/state/navigation/showcase_navigator.dart';
 import 'package:flutter/material.dart';
+
+import 'processes/showcase/state/controller/showcase_controller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,6 +41,125 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  void _startProcessChainShowcase(BuildContext context) {
+    final ShowcaseBloc one = ShowcaseBloc();
+    final ShowcaseBloc two = ShowcaseBloc();
+    final ShowcaseBloc three = ShowcaseBloc();
+    final ShowcaseBloc four = ShowcaseBloc();
+    final ShowcaseBloc five = ShowcaseBloc();
+    final ShowcaseBloc six = ShowcaseBloc();
+    final ShowcaseBloc seven = ShowcaseBloc();
+    final ShowcaseBloc eight = ShowcaseBloc();
+    final ShowcaseBloc nine = ShowcaseBloc();
+
+    final oneController = ShowcaseController(
+      bloc: one,
+      navigationBuilder: (ctx) => ShowcaseNavigator(one, ctx),
+    );
+
+    final twoController = ShowcaseController(
+      bloc: two,
+      navigationBuilder: (ctx) => ShowcaseNavigator(two, ctx),
+    );
+
+    final threeController = ShowcaseController(
+      bloc: three,
+      navigationBuilder: (ctx) => ShowcaseNavigator(three, ctx),
+    );
+
+    final fourController = ShowcaseController(
+      bloc: four,
+      navigationBuilder: (ctx) => ShowcaseNavigator(four, ctx),
+    );
+
+    final fiveController = ShowcaseController(
+      bloc: five,
+      navigationBuilder: (ctx) => ShowcaseNavigator(five, ctx),
+    );
+
+    final sixController = ShowcaseController(
+      bloc: six,
+      navigationBuilder: (ctx) => ShowcaseNavigator(six, ctx),
+    );
+
+    final sevenController = ShowcaseController(
+      bloc: seven,
+      navigationBuilder: (ctx) => ShowcaseNavigator(seven, ctx),
+    );
+
+    final eightController = ShowcaseController(
+      bloc: eight,
+      navigationBuilder: (ctx) => ShowcaseNavigator(eight, ctx),
+    );
+
+    final nineController = ShowcaseController(
+      bloc: nine,
+      navigationBuilder: (ctx) => ShowcaseNavigator(nine, ctx),
+    );
+
+    ProcessChain<ShowcaseLinkInput, ShowcaseLinkOutput> chain =
+        ProcessChain<ShowcaseLinkInput, ShowcaseLinkOutput>(
+      links: [
+        ShowcaseLink(oneController,
+            outputTransformer: (output) => _transformOutput(
+                output, "Second Process", "Continue to third", Colors.red),
+            inputTransformer: null),
+        ShowcaseLink(twoController,
+            outputTransformer: (output) => _transformOutput(
+                output, "Third Process", "Continue to fourth", Colors.yellow),
+            inputTransformer: null),
+        ShowcaseLink(threeController,
+            outputTransformer: (output) => _transformOutput(
+                output, "Fourth Process", "Continue to fifth", Colors.purple),
+            inputTransformer: null),
+        ShowcaseLink(fourController,
+            outputTransformer: (output) => _transformOutput(output,
+                "Fifth Process", "Continue to sixth", Colors.pinkAccent),
+            inputTransformer: null),
+        ShowcaseLink(fiveController,
+            outputTransformer: (output) => _transformOutput(
+                output, "Sixth Process", "Continue to seventh", Colors.white24),
+            inputTransformer: null),
+        ShowcaseLink(sixController,
+            outputTransformer: (output) => _transformOutput(
+                output, "Seventh Process", "Continue to eighth", Colors.teal),
+            inputTransformer: null),
+        ShowcaseLink(sevenController,
+            outputTransformer: (output) => _transformOutput(output,
+                "Eighth Process", "Continue to ninth", Colors.deepOrange),
+            inputTransformer: null),
+        ShowcaseLink(eightController,
+            outputTransformer: (output) => _transformOutput(
+                output, "Ninth Process", "end chain", Colors.brown),
+            inputTransformer: null),
+        ShowcaseLink(nineController,
+            outputTransformer: null, inputTransformer: null),
+      ],
+      context: context,
+      onEndCallback: (_) => {print("finished process")},
+    );
+
+    chain.start(ShowcaseLinkInput(
+      [],
+      "",
+      "First Process",
+      "Continue to second Process",
+      Colors.blue,
+    ));
+  }
+
+  ShowcaseLinkInput _transformOutput(
+      ShowcaseLinkOutput output, String header, String text, Color color) {
+    return ShowcaseLinkInput(
+      output.input.previousProcessNames,
+      output.processName,
+      header,
+      text,
+      color,
+    );
+  }
+
+  @Deprecated("should be removed once other example is implemented")
   void _startProcessChain(BuildContext context) {
     final RegistrationProcessBloc one = RegistrationProcessBloc();
     final RegistrationProcessBloc two = RegistrationProcessBloc();
@@ -59,14 +185,17 @@ class _MyHomePageState extends State<MyHomePage> {
       context: context,
       onEndCallback: _onChainEnd,
       links: [
-        RegistrationLink(oneController,
-            outputTransformer: null, inputTransformer: null),
+        RegistrationLink(
+          oneController,
+          outputTransformer: null,
+          inputTransformer: null,
+        ),
         DecisionLink<RegistrationProcessResult, RegistrationProcessResult>(
           condition: (input) => input.role == "Admin",
           then: RegistrationLink(
             twoController,
-            inputTransformer: (input) => "transformed",
-            outputTransformer: _transformLinkResult,
+            inputTransformer: _transformTwoInput,
+            outputTransformer: null,
           ),
           elseThen: BreakoutLink<RegistrationProcessResult>(
               inputTransformer: null, outputTransformer: null),
@@ -74,7 +203,9 @@ class _MyHomePageState extends State<MyHomePage> {
           outputTransformer: null,
         ),
         BreakoutLink<RegistrationProcessResult>(
-            inputTransformer: null, outputTransformer: null),
+          inputTransformer: null,
+          outputTransformer: null,
+        ),
       ],
     );
 
@@ -83,8 +214,8 @@ class _MyHomePageState extends State<MyHomePage> {
     chain.start(input);
   }
 
-  String _transformLinkResult(RegistrationProcessResult result) {
-    return "This is the output from another link";
+  String _transformTwoInput(dynamic x) {
+    return "two input";
   }
 
   void _onChainEnd(void _) {
@@ -126,7 +257,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             IconButton(
               icon: const Icon(Icons.list_alt, size: 48),
-              onPressed: () => _startProcessChain(context),
+              onPressed: () => _startProcessChainShowcase(context),
             ),
           ],
         ),

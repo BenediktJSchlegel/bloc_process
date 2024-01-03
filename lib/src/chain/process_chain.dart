@@ -1,8 +1,5 @@
 import 'package:bloc_process/bloc_process.dart';
-import 'package:bloc_process/src/helper/input_output_typed.dart';
 import 'package:flutter/widgets.dart';
-
-import 'links/chain_link.dart';
 
 class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
   final BuildContext _context;
@@ -22,7 +19,7 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
 
   void start(TInput input) {
     if (_hasStarted) {
-      throw Error(); // TODO: Change error. Chain already started
+      throw ProcessAlreadyStartedError();
     }
 
     _hasStarted = true;
@@ -43,7 +40,7 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
     ChainLink nextLink = _links[_index];
 
     if (!nextLink.isInputType(lastOutput)) {
-      throw Error(); // TODO: Change error
+      throw TypeIOError(lastOutput, nextLink.inputType);
     }
 
     if (_links[_index].inputTransformer != null) {
@@ -57,14 +54,9 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
   }
 
   void _onLinkCompleted(dynamic output, bool breakout) {
-    if (breakout) {
-      _onEndCallback.call(output);
-      return;
-    }
-
-    if (_isLastLink()) {
+    if (_isLastLink() || breakout) {
       if (!isOutputType(output)) {
-        throw Error(); // TODO: throw better error
+        throw TypeIOError(output, TOutput);
       }
 
       _onEndCallback.call(output as TOutput);

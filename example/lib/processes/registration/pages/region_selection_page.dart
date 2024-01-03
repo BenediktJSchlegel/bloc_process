@@ -1,9 +1,9 @@
 import 'package:bloc_process/bloc_process.dart';
-import 'package:example/state/bloc/registration_process_events.dart';
 import 'package:flutter/material.dart';
 
-import '../helpers/utils.dart';
+import '../../../helpers/utils.dart';
 import '../state/bloc/registration_process_bloc.dart';
+import '../state/bloc/registration_process_events.dart';
 
 class RegionSelectionPage extends StatefulBlocRoute<RegistrationProcessBloc> {
   const RegionSelectionPage(super.bloc, {super.key});

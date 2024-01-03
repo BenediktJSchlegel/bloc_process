@@ -6,4 +6,7 @@ mixin InputOutputTyped<TInput, TOutput> {
   bool isOutputType(dynamic value) {
     return value is TOutput;
   }
+
+  Type get inputType => TInput;
+  Type get outputType => TOutput;
 }

@@ -1,6 +1,5 @@
+import 'package:bloc_process/bloc_process.dart';
 import 'package:flutter/widgets.dart';
-
-import '../links/chain_link.dart';
 
 class DecisionLink<TInput, TOutput> extends ChainLink<TInput, TOutput> {
   final bool Function(TInput input) _condition;
@@ -23,19 +22,38 @@ class DecisionLink<TInput, TOutput> extends ChainLink<TInput, TOutput> {
 
   @override
   void start(BuildContext context, TInput input) {
-    if (_condition(input)) {
-      _then.onEnd = _onLinkCompleted;
-      _then.start(context, input);
-    } else {
-      _elseThen.onEnd = _onLinkCompleted;
-      _elseThen.start(context, input);
+    _startNextLink(context, _condition(input) ? _then : _elseThen, input);
+  }
+
+  void _startNextLink(BuildContext context, ChainLink link, TInput input) {
+    dynamic nextInput = _applyInputTransformer(link, input);
+
+    _checkNextInput(link, nextInput);
+
+    link.onEnd = _onLinkCompleted;
+    link.start(context, nextInput);
+  }
+
+  void _checkNextInput(ChainLink link, dynamic input) {
+    if (!link.isInputType(input)) {
+      throw TypeIOError(input, link.inputType);
     }
   }
 
+  dynamic _applyInputTransformer(ChainLink link, dynamic input) {
+    if (link.inputTransformer != null) {
+      return link.inputTransformer!.call(input);
+    }
+
+    return input;
+  }
+
   void _onLinkCompleted(dynamic output) {
-    if (!isOutputType(output)) {
-      // Throw better error. -> output of sublink is not output of this
-      throw Error();
+    dynamic finalOutput =
+        outputTransformer != null ? outputTransformer!.call(output) : output;
+
+    if (!isOutputType(finalOutput)) {
+      throw TypeIOError(finalOutput, TOutput);
     }
 
     _onCompleted(output as TOutput);

@@ -23,3 +23,7 @@ export 'src/chain/links/breakout_link.dart';
 export 'src/chain/links/chain_link.dart';
 export 'src/chain/links/decision_link.dart';
 export 'src/chain/links/process_link.dart';
+export 'src/chain/links/pass_link.dart';
+
+export 'src/helper/input_output_typed.dart';
+export 'src/exceptions/type_io_error.dart';

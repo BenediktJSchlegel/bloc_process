@@ -1,11 +1,10 @@
 import 'package:bloc_process/bloc_process.dart';
-import 'package:example/state/bloc/registration_process_bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../pages/basic_information_page.dart';
 import '../../pages/password_page.dart';
 import '../../pages/region_selection_page.dart';
+import '../bloc/registration_process_bloc.dart';
 import '../bloc/registration_process_state.dart';
 
 class RegistrationProcessNavigator extends ProcessNavigator<

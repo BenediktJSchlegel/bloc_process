@@ -1,8 +1,8 @@
 import 'package:bloc_process/bloc_process.dart';
-import 'package:example/state/bloc/registration_process_events.dart';
 import 'package:flutter/material.dart';
 
-import '../helpers/utils.dart';
+import '../../../helpers/utils.dart';
+import '../state/bloc/registration_process_events.dart';
 
 class PasswordPage extends StatelessBlocRoute {
   const PasswordPage(super.bloc, {super.key});
