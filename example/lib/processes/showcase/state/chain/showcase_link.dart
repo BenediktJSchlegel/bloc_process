@@ -18,7 +18,7 @@ class ShowcaseLink extends ProcessLink<
     ShowcaseController> {
   ShowcaseLink(
     super.controller, {
-    required super.outputTransformer,
-    required super.inputTransformer,
+    super.outputTransformer,
+    super.inputTransformer,
   });
 }

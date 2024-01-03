@@ -10,8 +10,8 @@ class DecisionLink<TInput, TOutput> extends ChainLink<TInput, TOutput> {
     required bool Function(TInput input) condition,
     required ChainLink then,
     required ChainLink elseThen,
-    required dynamic Function(TOutput output)? outputTransformer,
-    required TInput Function(dynamic input)? inputTransformer,
+    dynamic Function(TOutput output)? outputTransformer,
+    TInput Function(dynamic input)? inputTransformer,
   })  : _condition = condition,
         _then = then,
         _elseThen = elseThen,
@@ -62,6 +62,7 @@ class DecisionLink<TInput, TOutput> extends ChainLink<TInput, TOutput> {
   void _onCompleted(TOutput output) {
     if (super.outputTransformer != null) {
       onEnd!.call(super.outputTransformer!.call(output));
+
       return;
     }
 

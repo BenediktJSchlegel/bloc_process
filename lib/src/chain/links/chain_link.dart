@@ -11,8 +11,8 @@ abstract class ChainLink<TInput, TOutput>
   void Function(dynamic output)? onEnd;
 
   ChainLink({
-    required this.outputTransformer,
-    required this.inputTransformer,
+    this.outputTransformer,
+    this.inputTransformer,
   });
 
   void start(BuildContext context, TInput input);

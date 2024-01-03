@@ -9,6 +9,8 @@ class InitEvent implements ShowcaseEvent {
   final String previousProcessName;
   final List<String> previousProcessNames;
   final Color color;
+  final bool allowsSkip;
+  final bool allowsBreakout;
 
   InitEvent(
     this.headerText,
@@ -16,10 +18,16 @@ class InitEvent implements ShowcaseEvent {
     this.previousProcessName,
     this.previousProcessNames,
     this.color,
+    this.allowsSkip,
+    this.allowsBreakout,
   );
 }
 
-class ShowcaseContinueEvent implements ShowcaseEvent {}
+class ShowcaseContinueEvent implements ShowcaseEvent {
+  final String action;
+
+  ShowcaseContinueEvent(this.action);
+}
 
 class ShowcaseCauseErrorEvent implements ShowcaseEvent {
   final String message;

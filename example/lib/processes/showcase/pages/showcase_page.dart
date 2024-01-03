@@ -29,8 +29,10 @@ class ShowcasePage extends StatelessBlocRoute<ShowcaseBloc> {
               ),
               TextButton(
                 child: Text(bloc.state.continueText),
-                onPressed: () => _onContinuePressed(),
+                onPressed: () => _onContinuePressed("continue"),
               ),
+              _buildSkipButton(),
+              _buildBreakoutButton(),
             ],
           ),
         ),
@@ -38,12 +40,30 @@ class ShowcasePage extends StatelessBlocRoute<ShowcaseBloc> {
     );
   }
 
+  Widget _buildSkipButton() {
+    return bloc.state.allowsSkip
+        ? TextButton(
+            onPressed: () => _onContinuePressed("skip"),
+            child: const Text("Skip"),
+          )
+        : Container();
+  }
+
+  Widget _buildBreakoutButton() {
+    return bloc.state.allowsBreakout
+        ? TextButton(
+            onPressed: () => _onContinuePressed("breakout"),
+            child: const Text("Breakout"),
+          )
+        : Container();
+  }
+
   void _onError(ErrorEvent event, BuildContext context) {
     Utils(context).showErrorDialog(event.message ?? "");
   }
 
-  void _onContinuePressed() {
-    bloc.add(ShowcaseContinueEvent());
+  void _onContinuePressed(String action) {
+    bloc.add(ShowcaseContinueEvent(action));
   }
 
   void _onErrorPressed() {

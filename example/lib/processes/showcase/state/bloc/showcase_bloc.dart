@@ -20,10 +20,12 @@ class ShowcaseBloc extends ProcessBloc<ShowcaseLinkInput, ShowcaseEvent,
             event.previousProcessNames,
             event.previousProcessName,
             event.color,
+            event.allowsSkip,
+            event.allowsBreakout,
           ));
           break;
         case ShowcaseContinueEvent:
-          complete(_buildOutput());
+          complete(_buildOutput((event as ShowcaseContinueEvent).action));
           break;
         case ShowcaseCauseErrorEvent:
           emitError(ErrorEvent((event as ShowcaseCauseErrorEvent).message));
@@ -42,10 +44,12 @@ class ShowcaseBloc extends ProcessBloc<ShowcaseLinkInput, ShowcaseEvent,
       input.previousProcessName,
       input.previousProcessNames,
       input.color,
+      input.allowsSkip,
+      input.allowsBreakout,
     ));
   }
 
-  ShowcaseLinkOutput _buildOutput() {
-    return ShowcaseLinkOutput(_input, state.headerText);
+  ShowcaseLinkOutput _buildOutput(String action) {
+    return ShowcaseLinkOutput(_input, state.headerText, action);
   }
 }

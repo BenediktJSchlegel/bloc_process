@@ -48,6 +48,8 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
         _context,
         _links[_index].inputTransformer!.call(lastOutput),
       );
+
+      return;
     }
 
     _links[_index].start(_context, lastOutput);

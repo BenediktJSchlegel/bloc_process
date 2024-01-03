@@ -7,6 +7,8 @@ class ShowcaseState implements ProcessBlocState {
   final List<String> previousProcessNames;
   final String previousProcessName;
   final Color color;
+  final bool allowsSkip;
+  final bool allowsBreakout;
 
   ShowcaseState(
     this.headerText,
@@ -14,6 +16,8 @@ class ShowcaseState implements ProcessBlocState {
     this.previousProcessNames,
     this.previousProcessName,
     this.color,
+    this.allowsSkip,
+    this.allowsBreakout,
   );
 
   ShowcaseState.initial()
@@ -21,5 +25,7 @@ class ShowcaseState implements ProcessBlocState {
         continueText = "",
         previousProcessName = "",
         previousProcessNames = [],
-        color = Colors.white;
+        color = Colors.white,
+        allowsSkip = false,
+        allowsBreakout = false;
 }

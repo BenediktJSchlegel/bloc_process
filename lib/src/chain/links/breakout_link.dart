@@ -11,6 +11,8 @@ class BreakoutLink<TInput> extends ChainLink<TInput, TInput> {
   void start(BuildContext context, TInput input) {
     if (super.outputTransformer != null) {
       super.onEnd!.call(super.outputTransformer!.call(input));
+
+      return;
     }
 
     super.onEnd!.call(input);

@@ -15,8 +15,8 @@ class ProcessLink<
 
   ProcessLink(
     this._controller, {
-    required dynamic Function(TOutput output)? outputTransformer,
-    required TInput Function(dynamic input)? inputTransformer,
+    dynamic Function(TOutput output)? outputTransformer,
+    TInput Function(dynamic input)? inputTransformer,
   }) : super(
           inputTransformer: inputTransformer,
           outputTransformer: outputTransformer,
