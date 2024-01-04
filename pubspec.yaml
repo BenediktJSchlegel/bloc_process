@@ -1,5 +1,5 @@
 name: bloc_process
-description: "A new Flutter project."
+description: "A package that extends the BloC pattern to fully support linear processes as well as chaining of such processes. This includes separation of errors into their own stream and a standalone navigation component for state based navigation."
 version: 0.0.1
 
 environment:
