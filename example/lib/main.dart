@@ -49,8 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
     final ShowcaseBloc five = ShowcaseBloc();
     final ShowcaseBloc six = ShowcaseBloc();
     final ShowcaseBloc seven = ShowcaseBloc();
-    final ShowcaseBloc eight = ShowcaseBloc();
-    final ShowcaseBloc nine = ShowcaseBloc();
 
     final oneController = ShowcaseController(
       bloc: one,
@@ -85,16 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
     final sevenController = ShowcaseController(
       bloc: seven,
       navigationBuilder: (ctx) => ShowcaseNavigator(seven, ctx),
-    );
-
-    final eightController = ShowcaseController(
-      bloc: eight,
-      navigationBuilder: (ctx) => ShowcaseNavigator(eight, ctx),
-    );
-
-    final nineController = ShowcaseController(
-      bloc: nine,
-      navigationBuilder: (ctx) => ShowcaseNavigator(nine, ctx),
     );
 
     ProcessChain<ShowcaseLinkInput, ShowcaseLinkOutput> chain =
@@ -165,8 +153,18 @@ class _MyHomePageState extends State<MyHomePage> {
         ShowcaseLink(
           fourController,
           inputTransformer: (input) {
-            print(input);
-            return input;
+            input as ShowcaseLinkInput;
+
+            return ShowcaseLinkInput(
+              input.previousProcessNames,
+              input.previousProcessName,
+              input.headerText,
+              input.continueText,
+              input.color,
+              false,
+              true,
+              input.previousAction,
+            );
           },
           outputTransformer: (output) => _transformOutput(
             output,
@@ -175,8 +173,46 @@ class _MyHomePageState extends State<MyHomePage> {
             Colors.pinkAccent,
           ),
         ),
+        DecisionLink(
+          condition: (input) => input.previousAction == "breakout",
+          then: BreakoutLink(
+            outputTransformer: (output) {
+              return ShowcaseLinkOutput(output, "", "");
+            },
+          ),
+          elseThen: PassLink(
+            outputTransformer: (output) {
+              // output is a showcase-input since PassLink just forwards the input as the output
+              // must alter the input so it fits the next process
+              output as ShowcaseLinkInput;
+
+              return ShowcaseLinkInput(
+                output.previousProcessNames,
+                output.previousProcessName,
+                "Fifth Process",
+                "Continue to sixth",
+                Colors.purple,
+                false,
+                false,
+                output.previousAction,
+              );
+            },
+          ),
+        ),
         ShowcaseLink(
           fiveController,
+          inputTransformer: (input) {
+            return ShowcaseLinkInput(
+              input.previousProcessNames,
+              input.previousProcessName,
+              input.headerText,
+              input.continueText,
+              input.color,
+              true,
+              true,
+              input.previousAction,
+            );
+          },
           outputTransformer: (output) => _transformOutput(
             output,
             "Sixth Process",
@@ -184,34 +220,45 @@ class _MyHomePageState extends State<MyHomePage> {
             Colors.white24,
           ),
         ),
-        ShowcaseLink(
-          sixController,
-          outputTransformer: (output) => _transformOutput(
-            output,
-            "Seventh Process",
-            "Continue to eighth",
-            Colors.teal,
+        DecisionLink(
+          condition: (input) => input.previousAction == "breakout",
+          then: BreakoutLink(
+            outputTransformer: (output) {
+              return ShowcaseLinkOutput(output, "", "");
+            },
+          ),
+          elseThen: DecisionLink(
+            condition: (input) => input.previousAction == "skip",
+            then: PassLink(
+              outputTransformer: (output) {
+                // output is a showcase-input since PassLink just forwards the input as the output
+                // must alter the input so it fits the next process
+                output as ShowcaseLinkInput;
+
+                return ShowcaseLinkInput(
+                  output.previousProcessNames,
+                  output.previousProcessName,
+                  "Seventh Process",
+                  "end chain",
+                  Colors.teal,
+                  false,
+                  false,
+                  output.previousAction,
+                );
+              },
+            ),
+            elseThen: ShowcaseLink(
+              sixController,
+              outputTransformer: (output) => _transformOutput(
+                output,
+                "Seventh Process",
+                "end chain",
+                Colors.teal,
+              ),
+            ),
           ),
         ),
-        ShowcaseLink(
-          sevenController,
-          outputTransformer: (output) => _transformOutput(
-            output,
-            "Eighth Process",
-            "Continue to ninth",
-            Colors.deepOrange,
-          ),
-        ),
-        ShowcaseLink(
-          eightController,
-          outputTransformer: (output) => _transformOutput(
-            output,
-            "Ninth Process",
-            "end chain",
-            Colors.brown,
-          ),
-        ),
-        ShowcaseLink(nineController),
+        ShowcaseLink(sevenController),
       ],
       context: context,
       onEndCallback: (_) => {print("finished process")},
@@ -241,61 +288,6 @@ class _MyHomePageState extends State<MyHomePage> {
       false,
       output.action,
     );
-  }
-
-  @Deprecated("should be removed once other example is implemented")
-  void _startProcessChain(BuildContext context) {
-    final RegistrationProcessBloc one = RegistrationProcessBloc();
-    final RegistrationProcessBloc two = RegistrationProcessBloc();
-    final RegistrationProcessBloc three = RegistrationProcessBloc();
-
-    final oneController = RegistrationProcessController(
-      bloc: one,
-      navigationBuilder: (ctx) => RegistrationProcessNavigator(ctx, one),
-    );
-
-    final twoController = RegistrationProcessController(
-      bloc: two,
-      navigationBuilder: (ctx) => RegistrationProcessNavigator(ctx, two),
-    );
-
-    final threeController = RegistrationProcessController(
-      bloc: three,
-      navigationBuilder: (ctx) => RegistrationProcessNavigator(ctx, three),
-    );
-
-    final ProcessChain<String, RegistrationProcessResult> chain =
-        ProcessChain<String, RegistrationProcessResult>(
-      context: context,
-      onEndCallback: _onChainEnd,
-      links: [
-        RegistrationLink(
-          oneController,
-          outputTransformer: null,
-          inputTransformer: null,
-        ),
-        DecisionLink<RegistrationProcessResult, RegistrationProcessResult>(
-          condition: (input) => input.role == "Admin",
-          then: RegistrationLink(
-            twoController,
-            inputTransformer: _transformTwoInput,
-            outputTransformer: null,
-          ),
-          elseThen: BreakoutLink<RegistrationProcessResult>(
-              inputTransformer: null, outputTransformer: null),
-          inputTransformer: null,
-          outputTransformer: null,
-        ),
-        BreakoutLink<RegistrationProcessResult>(
-          inputTransformer: null,
-          outputTransformer: null,
-        ),
-      ],
-    );
-
-    String input = "This is the chain input";
-
-    chain.start(input);
   }
 
   String _transformTwoInput(dynamic x) {
@@ -335,12 +327,14 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            IconButton(
-              icon: const Icon(Icons.start, size: 48),
+            TextButton(
+              child: const Text("Process Demo",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               onPressed: () => _startProcess(context),
             ),
-            IconButton(
-              icon: const Icon(Icons.list_alt, size: 48),
+            TextButton(
+              child: const Text("ProcessChain Demo",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               onPressed: () => _startProcessChainShowcase(context),
             ),
           ],

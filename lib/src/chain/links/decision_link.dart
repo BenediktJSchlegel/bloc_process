@@ -6,6 +6,8 @@ class DecisionLink<TInput, TOutput> extends ChainLink<TInput, TOutput> {
   final ChainLink _then;
   final ChainLink _elseThen;
 
+  void Function(dynamic output)? onBreakout;
+
   DecisionLink({
     required bool Function(TInput input) condition,
     required ChainLink then,
@@ -30,7 +32,7 @@ class DecisionLink<TInput, TOutput> extends ChainLink<TInput, TOutput> {
 
     _checkNextInput(link, nextInput);
 
-    link.onEnd = _onLinkCompleted;
+    link.onEnd = (out) => _onLinkCompleted(out, link is BreakoutLink);
     link.start(context, nextInput);
   }
 
@@ -48,7 +50,7 @@ class DecisionLink<TInput, TOutput> extends ChainLink<TInput, TOutput> {
     return input;
   }
 
-  void _onLinkCompleted(dynamic output) {
+  void _onLinkCompleted(dynamic output, bool breakout) {
     dynamic finalOutput =
         outputTransformer != null ? outputTransformer!.call(output) : output;
 
@@ -56,16 +58,24 @@ class DecisionLink<TInput, TOutput> extends ChainLink<TInput, TOutput> {
       throw TypeIOError(finalOutput, TOutput);
     }
 
-    _onCompleted(output as TOutput);
+    _onCompleted(output as TOutput, breakout);
   }
 
-  void _onCompleted(TOutput output) {
+  void _onCompleted(TOutput output, bool breakout) {
     if (super.outputTransformer != null) {
-      onEnd!.call(super.outputTransformer!.call(output));
+      _callEnd(super.outputTransformer!.call(output), breakout);
 
       return;
     }
 
-    onEnd!.call(output);
+    _callEnd(output, breakout);
+  }
+
+  void _callEnd(TOutput output, bool breakout) {
+    if (breakout) {
+      onBreakout!.call(output);
+    } else {
+      onEnd!.call(output);
+    }
   }
 }

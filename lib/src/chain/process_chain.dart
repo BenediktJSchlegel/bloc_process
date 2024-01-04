@@ -33,6 +33,10 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
   }
 
   void _registerOnEnd(ChainLink link) {
+    if (link is DecisionLink) {
+      link.onBreakout = (dynamic out) => _onLinkCompleted(out, true);
+    }
+
     link.onEnd = (dynamic out) => _onLinkCompleted(out, link is BreakoutLink);
   }
 

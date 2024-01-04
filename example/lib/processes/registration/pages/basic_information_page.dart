@@ -31,30 +31,18 @@ class _BasicInformationPageState extends State<BasicInformationPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              DropdownButton<String>(
-                value: _selectedValue,
-                icon: const Icon(Icons.supervised_user_circle, size: 24),
-                elevation: 16,
-                style: const TextStyle(color: Colors.deepPurple, fontSize: 24),
-                underline: Container(
-                  height: 2,
-                  color: Colors.deepPurpleAccent,
-                ),
-                onChanged: _pickerChanged,
-                items: BasicInformationPage.source
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
               IconButton(
-                icon: const Icon(Icons.error),
+                icon: const Icon(
+                  Icons.error,
+                  size: 34,
+                ),
                 onPressed: () => _onErrorPressed(),
               ),
               IconButton(
-                icon: const Icon(Icons.arrow_forward_ios),
+                icon: const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 34,
+                ),
                 onPressed: () => _onContinuePressed(),
               ),
             ],

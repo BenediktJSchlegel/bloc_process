@@ -24,11 +24,14 @@ class ShowcasePage extends StatelessBlocRoute<ShowcaseBloc> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                child: const Text("Show error"),
+                child: const Text("Show error", style: TextStyle(fontSize: 18)),
                 onPressed: () => _onErrorPressed(),
               ),
               TextButton(
-                child: Text(bloc.state.continueText),
+                child: Text(
+                  bloc.state.continueText,
+                  style: const TextStyle(fontSize: 18),
+                ),
                 onPressed: () => _onContinuePressed("continue"),
               ),
               _buildSkipButton(),
@@ -44,7 +47,7 @@ class ShowcasePage extends StatelessBlocRoute<ShowcaseBloc> {
     return bloc.state.allowsSkip
         ? TextButton(
             onPressed: () => _onContinuePressed("skip"),
-            child: const Text("Skip"),
+            child: const Text("Skip", style: TextStyle(fontSize: 18)),
           )
         : Container();
   }
@@ -53,7 +56,7 @@ class ShowcasePage extends StatelessBlocRoute<ShowcaseBloc> {
     return bloc.state.allowsBreakout
         ? TextButton(
             onPressed: () => _onContinuePressed("breakout"),
-            child: const Text("Breakout"),
+            child: const Text("Breakout", style: TextStyle(fontSize: 18)),
           )
         : Container();
   }

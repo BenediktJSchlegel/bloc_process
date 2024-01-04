@@ -23,11 +23,17 @@ class PasswordPage extends StatelessBlocRoute {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                icon: const Icon(Icons.error),
+                icon: const Icon(
+                  Icons.error,
+                  size: 34,
+                ),
                 onPressed: () => _onErrorPressed(),
               ),
               IconButton(
-                icon: const Icon(Icons.arrow_forward_ios),
+                icon: const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 34,
+                ),
                 onPressed: () => _onContinuePressed(),
               ),
             ],
