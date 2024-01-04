@@ -1,6 +1,7 @@
 import 'package:bloc_process/bloc_process.dart';
 import 'package:flutter/widgets.dart';
 
+/// Allows for optional branching within a `ProcessChain`
 class DecisionLink<TInput, TOutput> extends ChainLink<TInput, TOutput> {
   final bool Function(TInput input) _condition;
   final ChainLink _then;
@@ -8,6 +9,8 @@ class DecisionLink<TInput, TOutput> extends ChainLink<TInput, TOutput> {
 
   void Function(dynamic output)? onBreakout;
 
+  /// Creates a new `DecisionLink`. If [condition] evaluates to `true`, the [then] `ChainLink` is started.
+  /// otherwise the [elseThen] `ChainLink` is started. Input may be transformed by [inputTransformer], Output may be transformed by [outputTransformer]
   DecisionLink({
     required bool Function(TInput input) condition,
     required ChainLink then,

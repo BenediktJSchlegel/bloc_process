@@ -4,14 +4,24 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc_process.dart';
-import '../error/error_event.dart';
 
+/// `BlocConsumer` widget - extended with support for the `ProcessBloc`s error stream.
+///
+/// `TInput`: the type for the process input
+///
+/// `TEvent` of Type `ProcessBlocEvent`: the type of the event classes
+///
+/// `TState` of Type `ProcessBlocState`: the type of the state object
+///
+/// `TOutput`: the type of the process output
+///
+/// `TBloc` of type `ProcessBloc`: type of the bloc controlling this process
 class ProcessBlocConsumer<
         TInput,
         TEvent extends ProcessBlocEvent,
         TState extends ProcessBlocState,
-        TReturn,
-        TBloc extends ProcessBloc<TInput, TEvent, TState, TReturn>>
+        TOutput,
+        TBloc extends ProcessBloc<TInput, TEvent, TState, TOutput>>
     extends StatefulWidget {
   final Function(ErrorEvent event)? onErrorCallback;
   final TBloc bloc;
@@ -32,7 +42,7 @@ class ProcessBlocConsumer<
 
   @override
   State<ProcessBlocConsumer> createState() =>
-      _ProcessBlocConsumerState<TInput, TEvent, TState, TReturn, TBloc>();
+      _ProcessBlocConsumerState<TInput, TEvent, TState, TOutput, TBloc>();
 }
 
 class _ProcessBlocConsumerState<

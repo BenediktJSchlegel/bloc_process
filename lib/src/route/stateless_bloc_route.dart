@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'bloc_route.dart';
 
+/// Exchange `StatelessWidget` with this for widget that are considered to be routes within a process.
 abstract class StatelessBlocRoute<TBloc extends ProcessBloc>
     extends StatelessWidget implements BlocRoute {
   final TBloc bloc;

@@ -8,20 +8,39 @@ import '../exceptions/process_already_started_error.dart';
 import '../navigation/navigation_handler.dart';
 import '../navigation/process_navigator.dart';
 
+/// Main entrypoint for the `BlocProcess`.
+///
+/// ---
+///
+/// `TInput`: the type for the process input
+///
+/// `TEvent` of Type `ProcessBlocEvent`: the type of the event classes
+///
+/// `TState` of Type `ProcessBlocState`: the type of the state object
+///
+/// `TOutput`: the type of the process output
+///
+/// `TBloc` of type `ProcessBloc`: type of the bloc controlling this process
+///
+/// `TNavigator` of type `ProcessNavigator`: type of the navigator responsible for this process
+///
+/// ---
+///
+/// This class  may be extended to abstract away the many type declarations
 class ProcessController<
         TInput,
         TEvent extends ProcessBlocEvent,
         TState extends ProcessBlocState,
-        TReturn,
-        TBloc extends ProcessBloc<TInput, TEvent, TState, TReturn>,
+        TOutput,
+        TBloc extends ProcessBloc<TInput, TEvent, TState, TOutput>,
         TNavigator extends ProcessNavigator<TBloc, TState>>
     extends BlocDependant<TBloc> {
   final NavigationHandler _navigationHandler;
   final ProcessNavigator Function(BuildContext context) _navigationBuilder;
 
-  late final void Function(TReturn value) _completedCallback;
+  late final void Function(TOutput value) _completedCallback;
 
-  bool hasBeenStarted = false;
+  bool _hasBeenStarted = false;
 
   ProcessController({
     required TBloc bloc,
@@ -32,14 +51,21 @@ class ProcessController<
     bloc.mountCallback(_onComplete);
   }
 
-  void start(BuildContext context, TInput input,
-      void Function(TReturn output) callback) {
-    if (hasBeenStarted) {
+  /// Starts the process using the provided [context] and [input]. The output [callback] will be called once the process completes.
+  ///
+  /// This may only be called once per process.
+  /// Calling this more than once will cause a `ProcessAlreadyStartedError` to be thrown.
+  void start(
+    BuildContext context,
+    TInput input,
+    void Function(TOutput output) callback,
+  ) {
+    if (_hasBeenStarted) {
       throw ProcessAlreadyStartedError();
     }
 
     _completedCallback = callback;
-    hasBeenStarted = true;
+    _hasBeenStarted = true;
 
     bloc.initialize(input);
 
@@ -47,7 +73,7 @@ class ProcessController<
     _navigationHandler.start();
   }
 
-  void _onComplete(TReturn value) {
+  void _onComplete(TOutput value) {
     _close();
 
     _completedCallback.call(value);

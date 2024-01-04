@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 
 import '../error/error_event.dart';
 
+/// Allows listening to the given [bloc]'s error stream.
 class ProcessBlocErrorListener<TBloc extends ProcessBloc>
     extends StatefulWidget {
   final TBloc bloc;

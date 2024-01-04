@@ -2,6 +2,21 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../bloc_process.dart';
 
+///
+///
+/// `TInput`: the type for the process input
+///
+/// `TEvent` of Type `ProcessBlocEvent`: the type of the event classes
+///
+/// `TState` of Type `ProcessBlocState`: the type of the state object
+///
+/// `TOutput`: the type of the process output
+///
+/// `TBloc` of type `ProcessBloc`: type of the bloc controlling this link's process
+///
+/// `TNavigator` of type `ProcessNavigator`: type of the navigator responsible for this link's process
+///
+/// `TProcess` of type `ProcessController`: type of the controller started by this link
 class ProcessLink<
     TInput,
     TEvent extends ProcessBlocEvent,
@@ -13,6 +28,8 @@ class ProcessLink<
         TNavigator>> extends ChainLink<TInput, TOutput> {
   final TProcess _controller;
 
+  /// Creates a new `ProcessLink` using the given `ProcessController` [_controller].
+  /// The input and output can optionally be transformed using [inputTransformer] and [outputTransformer]
   ProcessLink(
     this._controller, {
     dynamic Function(TOutput output)? outputTransformer,

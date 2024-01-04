@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../../bloc_process.dart';
 
+/// `PassLink` is a `ChainLink` that only applies its transformers. Can be using in a `DecisionLink` to ignore a case.
 class PassLink<TInputOutput> extends ChainLink<TInputOutput, TInputOutput> {
   PassLink({
     super.outputTransformer,
