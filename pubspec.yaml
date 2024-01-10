@@ -1,6 +1,7 @@
 name: bloc_process
-description: "A package that extends the BloC pattern to fully support linear processes as well as chaining of such processes. This includes separation of errors into their own stream and a standalone navigation component for state based navigation."
-version: 0.0.1
+description: "A package that extends the BloC pattern to fully support linear processes as well as chaining of such processes."
+version: 0.0.2
+repository: https://github.com/BenediktJSchlegel/bloc_process
 
 environment:
   sdk: '>=3.2.1 <4.0.0'

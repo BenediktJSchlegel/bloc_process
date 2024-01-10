@@ -8,13 +8,24 @@ abstract class CompletableBloc<TEvent extends ProcessBlocEvent,
   @protected
   late final void Function(TReturn value) completeCallback;
 
+  @protected
+  late final void Function(int steps)? backOutCallback;
+
   CompletableBloc(super.initialState);
 
   void complete(TReturn value) {
     completeCallback.call(value);
   }
 
-  void mountCallback(void Function(TReturn value) callback) {
+  void backOut(int steps) {
+    backOutCallback?.call(steps);
+  }
+
+  void mountCallbacks(
+    void Function(TReturn value) callback,
+    void Function(int steps) backOut,
+  ) {
     completeCallback = callback;
+    backOutCallback = backOut;
   }
 }

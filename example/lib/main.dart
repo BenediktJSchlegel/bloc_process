@@ -53,36 +53,43 @@ class _MyHomePageState extends State<MyHomePage> {
     final oneController = ShowcaseController(
       bloc: one,
       navigationBuilder: (ctx) => ShowcaseNavigator(one, ctx),
+      persistAfterCompletion: true,
     );
 
     final twoController = ShowcaseController(
       bloc: two,
       navigationBuilder: (ctx) => ShowcaseNavigator(two, ctx),
+      persistAfterCompletion: true,
     );
 
     final threeController = ShowcaseController(
       bloc: three,
       navigationBuilder: (ctx) => ShowcaseNavigator(three, ctx),
+      persistAfterCompletion: true,
     );
 
     final fourController = ShowcaseController(
       bloc: four,
       navigationBuilder: (ctx) => ShowcaseNavigator(four, ctx),
+      persistAfterCompletion: true,
     );
 
     final fiveController = ShowcaseController(
       bloc: five,
       navigationBuilder: (ctx) => ShowcaseNavigator(five, ctx),
+      persistAfterCompletion: true,
     );
 
     final sixController = ShowcaseController(
       bloc: six,
       navigationBuilder: (ctx) => ShowcaseNavigator(six, ctx),
+      persistAfterCompletion: true,
     );
 
     final sevenController = ShowcaseController(
       bloc: seven,
       navigationBuilder: (ctx) => ShowcaseNavigator(seven, ctx),
+      persistAfterCompletion: true,
     );
 
     ProcessChain<ShowcaseLinkInput, ShowcaseLinkOutput> chain =
@@ -288,14 +295,6 @@ class _MyHomePageState extends State<MyHomePage> {
       false,
       output.action,
     );
-  }
-
-  String _transformTwoInput(dynamic x) {
-    return "two input";
-  }
-
-  void _onChainEnd(void _) {
-    print("Chain done");
   }
 
   void _startProcess(BuildContext context) {

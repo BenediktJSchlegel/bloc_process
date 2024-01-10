@@ -26,4 +26,9 @@ class ShowcaseNavigator extends ProcessNavigator<ShowcaseBloc, ShowcaseState> {
     // ignore for this example
     // navigation based on state goes here!
   }
+
+  @override
+  void onRevive(ShowcaseBloc bloc) {
+    Navigator.of(_context).push(MaterialPageRoute(builder: (context) => _page));
+  }
 }

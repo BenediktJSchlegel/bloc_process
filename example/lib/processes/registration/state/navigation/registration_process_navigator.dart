@@ -58,4 +58,7 @@ class RegistrationProcessNavigator extends ProcessNavigator<
       }
     }
   }
+
+  @override
+  void onRevive(RegistrationProcessBloc bloc) {}
 }

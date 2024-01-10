@@ -1,6 +1,9 @@
 import 'package:bloc_process/bloc_process.dart';
 import 'package:flutter/widgets.dart';
 
+import '../exceptions/backed_out_of_process_chain_error.dart';
+import '../exceptions/previous_link_is_not_process_error.dart';
+
 /// Controls the flow of multiple processes in order.
 ///
 /// ---
@@ -50,6 +53,10 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
       link.onBreakout = (dynamic out) => _onLinkCompleted(out, true);
     }
 
+    if (link is ProcessLink) {
+      link.onBackOut = _onBackOut;
+    }
+
     link.onEnd = (dynamic out) => _onLinkCompleted(out, link is BreakoutLink);
   }
 
@@ -78,6 +85,7 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
         throw TypeIOError(output, TOutput);
       }
 
+      _closePersistingProcessLinks();
       _onEndCallback.call(output as TOutput);
     } else {
       _index++;
@@ -85,7 +93,33 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
     }
   }
 
+  void _onBackOut(int steps) {
+    _index -= steps;
+
+    if (_index < 0) {
+      throw BackedOutOfProcessChainError();
+    }
+
+    ChainLink link = _links[_index];
+
+    if (link is! ProcessLink) {
+      throw PreviousLinkIsNotProcessError();
+    }
+
+    link.revive();
+  }
+
   bool _isLastLink() {
     return _index == (_links.length - 1);
+  }
+
+  void _closePersistingProcessLinks() {
+    _links.forEach(_closeLink);
+  }
+
+  void _closeLink(ChainLink link) {
+    if (link is ProcessLink) {
+      link.fullyClose();
+    }
   }
 }
