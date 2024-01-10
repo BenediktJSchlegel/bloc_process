@@ -28,6 +28,8 @@ class ProcessLink<
         TNavigator>> extends ChainLink<TInput, TOutput> {
   final TProcess _controller;
 
+  void Function(int steps)? onBackOut;
+
   /// Creates a new `ProcessLink` using the given `ProcessController` [_controller].
   /// The input and output can optionally be transformed using [inputTransformer] and [outputTransformer]
   ProcessLink(
@@ -41,7 +43,16 @@ class ProcessLink<
 
   @override
   void start(BuildContext context, TInput input) {
-    _controller.start(context, input, _onControllerCompleted);
+    _controller.start(
+        context, input, _onControllerCompleted, _onControlledBackedOut);
+  }
+
+  void revive() {
+    _controller.revive();
+  }
+
+  void fullyClose() {
+    _controller.fullyClose();
   }
 
   void _onControllerCompleted(TOutput output) {
@@ -51,5 +62,9 @@ class ProcessLink<
     }
 
     onEnd!.call(output);
+  }
+
+  void _onControlledBackedOut(int steps) {
+    onBackOut?.call(steps);
   }
 }

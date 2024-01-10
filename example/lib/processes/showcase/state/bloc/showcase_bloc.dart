@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ShowcaseBloc extends ProcessBloc<ShowcaseLinkInput, ShowcaseEvent,
     ShowcaseState, ShowcaseLinkOutput> {
-  late final ShowcaseLinkInput _input;
+  late ShowcaseLinkInput _input;
 
   ShowcaseBloc() : super(ShowcaseState.initial()) {
     on((ShowcaseEvent event, Emitter<ShowcaseState> emit) {
@@ -29,6 +29,9 @@ class ShowcaseBloc extends ProcessBloc<ShowcaseLinkInput, ShowcaseEvent,
           break;
         case ShowcaseCauseErrorEvent:
           emitError(ErrorEvent((event as ShowcaseCauseErrorEvent).message));
+          break;
+        case ShowcaseCanceledEvent:
+          backOut(1);
           break;
       }
     });

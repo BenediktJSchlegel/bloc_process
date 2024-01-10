@@ -36,11 +36,25 @@ class ShowcasePage extends StatelessBlocRoute<ShowcaseBloc> {
               ),
               _buildSkipButton(),
               _buildBreakoutButton(),
+              Padding(
+                padding: const EdgeInsets.only(top: 32),
+                child: TextButton(
+                  onPressed: _onBackOut,
+                  child: const Text(
+                    "Back",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _onBackOut() {
+    bloc.add(ShowcaseCanceledEvent());
   }
 
   Widget _buildSkipButton() {

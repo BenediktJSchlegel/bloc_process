@@ -13,4 +13,7 @@ abstract class ProcessNavigator<TBloc extends ProcessBloc,
 
   /// gets called when `complete()` is called inside the bloc
   void onEnd(TBloc bloc);
+
+  /// gets called when get process gets revived
+  void onRevive(TBloc bloc);
 }

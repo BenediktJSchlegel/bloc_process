@@ -32,4 +32,8 @@ class NavigationHandler {
   void unmount() {
     _blocStreamSubscription?.cancel();
   }
+
+  void revive() {
+    _navigator.onRevive(_bloc);
+  }
 }

@@ -34,3 +34,5 @@ class ShowcaseCauseErrorEvent implements ShowcaseEvent {
 
   ShowcaseCauseErrorEvent(this.message);
 }
+
+class ShowcaseCanceledEvent implements ShowcaseEvent {}

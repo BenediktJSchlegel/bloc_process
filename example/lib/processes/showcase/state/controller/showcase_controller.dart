@@ -14,5 +14,9 @@ class ShowcaseController extends ProcessController<
     ShowcaseLinkOutput,
     ShowcaseBloc,
     ShowcaseNavigator> {
-  ShowcaseController({required super.bloc, required super.navigationBuilder});
+  ShowcaseController({
+    required super.bloc,
+    required super.navigationBuilder,
+    required super.persistAfterCompletion,
+  });
 }

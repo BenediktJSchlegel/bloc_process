@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 
 import '../bloc/interfaces/process_bloc_event.dart';
 import '../exceptions/process_already_started_error.dart';
+import '../exceptions/process_not_started_error.dart';
 import '../navigation/navigation_handler.dart';
 import '../navigation/process_navigator.dart';
 
@@ -39,16 +40,22 @@ class ProcessController<
   final ProcessNavigator Function(BuildContext context) _navigationBuilder;
 
   late final void Function(TOutput value) _completedCallback;
+  late final void Function(int steps)? _backOutCallback;
+
+  final bool _persistAfterCompletion;
 
   bool _hasBeenStarted = false;
+  bool _allowRestart = false;
 
   ProcessController({
     required TBloc bloc,
     required ProcessNavigator Function(BuildContext context) navigationBuilder,
+    bool persistAfterCompletion = false,
   })  : _navigationHandler = NavigationHandler(bloc),
         _navigationBuilder = navigationBuilder,
+        _persistAfterCompletion = persistAfterCompletion,
         super(bloc) {
-    bloc.mountCallback(_onComplete);
+    bloc.mountCallbacks(_onComplete, _onBackOut);
   }
 
   /// Starts the process using the provided [context] and [input]. The output [callback] will be called once the process completes.
@@ -58,19 +65,48 @@ class ProcessController<
   void start(
     BuildContext context,
     TInput input,
-    void Function(TOutput output) callback,
-  ) {
-    if (_hasBeenStarted) {
+    void Function(TOutput output) callback, [
+    void Function(int steps)? backOut,
+  ]) {
+    if (_hasBeenStarted && !_allowRestart) {
       throw ProcessAlreadyStartedError();
     }
 
-    _completedCallback = callback;
-    _hasBeenStarted = true;
+    if (!_hasBeenStarted) {
+      _completedCallback = callback;
+      _backOutCallback = backOut;
+      _hasBeenStarted = true;
+
+      _navigationHandler.mount(_navigationBuilder.call(context), bloc.stream);
+    }
 
     bloc.initialize(input);
 
-    _navigationHandler.mount(_navigationBuilder.call(context), bloc.stream);
     _navigationHandler.start();
+  }
+
+  /// Restarts a process that has previously been finished, retaining the state from before.
+  /// This calls the `revive()` method in the `TNavigator`
+  void revive() {
+    if (!_hasBeenStarted) {
+      throw ProcessNotStartedError();
+    }
+
+    _navigationHandler.revive();
+  }
+
+  /// fully closes the process, even if `persistAfterCompletion` is true.
+  void fullyClose() {
+    _closeDependencies();
+  }
+
+  void _onBackOut(int steps) {
+    _navigationHandler.end();
+    _navigationHandler.unmount();
+
+    _allowRestart = true;
+
+    _backOutCallback?.call(steps);
   }
 
   void _onComplete(TOutput value) {
@@ -81,6 +117,14 @@ class ProcessController<
 
   void _close() {
     _navigationHandler.end();
+
+    if (!_persistAfterCompletion) {
+      _closeDependencies();
+    }
+  }
+
+  void _closeDependencies() {
+    _allowRestart = false;
     _navigationHandler.unmount();
 
     bloc.close();
