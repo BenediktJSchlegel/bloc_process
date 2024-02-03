@@ -28,3 +28,5 @@ export 'src/chain/links/process_link.dart';
 export 'src/chain/links/pass_link.dart';
 
 export 'src/helper/input_output_typed.dart';
+
+export 'src/configuration/navigation_configuration.dart';
