@@ -1,3 +1,4 @@
+import 'package:bloc_process/bloc_process.dart';
 import 'package:bloc_process/src/bloc/process_bloc.dart';
 import 'package:bloc_process/src/bloc/interfaces/process_bloc_state.dart';
 import 'package:bloc_process/src/helper/bloc_dependant.dart';
@@ -50,8 +51,10 @@ class ProcessController<
   ProcessController({
     required TBloc bloc,
     required ProcessNavigator Function(BuildContext context) navigationBuilder,
+    NavigationConfiguration navigationConfiguration =
+        const NavigationConfiguration.defaultConfiguration(),
     bool persistAfterCompletion = false,
-  })  : _navigationHandler = NavigationHandler(bloc),
+  })  : _navigationHandler = NavigationHandler(bloc, navigationConfiguration),
         _navigationBuilder = navigationBuilder,
         _persistAfterCompletion = persistAfterCompletion,
         super(bloc) {

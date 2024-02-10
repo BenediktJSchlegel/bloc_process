@@ -20,6 +20,24 @@ abstract class ProcessBloc<
     TOutput> extends ErrorProducingBloc<TEvent, TState, TOutput> {
   ProcessBloc(super.initialState);
 
-  /// called when `ProcessController.start()` gets called. [input] corresponds to the input to said method.
+  /// Called when `ProcessController.start()` gets called. [input] corresponds to the input to said method.
   initialize(TInput input);
+
+  /// Called when the process starts, and the `NavigationBehaviour` of the
+  /// `NavigationConfiguration` is set to `NavigationBehaviour.callback`
+  bool shouldNavigationOnStart() {
+    return true;
+  }
+
+  /// Called when the process ends, and the `NavigationBehaviour` of the
+  /// `NavigationConfiguration` is set to `NavigationBehaviour.callback`
+  bool shouldNavigationOnEnd() {
+    return true;
+  }
+
+  /// Called when the process gets revived, and the `NavigationBehaviour` of the
+  /// `NavigationConfiguration` is set to `NavigationBehaviour.callback`
+  bool shouldNavigationOnRevive() {
+    return true;
+  }
 }
