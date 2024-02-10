@@ -10,7 +10,7 @@ class FirstChannel extends BlocChannel<FirstMultiEvent, MultiState, MultiBloc> {
   FirstChannel(super.bloc);
 
   @override
-  void apply(FirstMultiEvent event, Emitter<MultiState> emit) {
+  void onEvent(FirstMultiEvent event, Emitter<MultiState> emit) {
     emit(MultiState("First"));
 
     switch (event.runtimeType) {

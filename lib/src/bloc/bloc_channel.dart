@@ -2,8 +2,8 @@ import 'package:bloc_process/bloc_process.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-abstract class BlocChannel<TEvent, TState,
-    TBloc extends MultiChannelProcessBloc> {
+abstract class BlocChannel<TEvent extends ProcessBlocEvent,
+    TState extends ProcessBlocState, TBloc extends MultiChannelProcessBloc> {
   final TBloc _bloc;
 
   BlocChannel(this._bloc);
@@ -11,7 +11,7 @@ abstract class BlocChannel<TEvent, TState,
   @nonVirtual
   bool isHandledBy(dynamic o) => o is TEvent;
 
-  void apply(TEvent event, Emitter<TState> emit);
+  void onEvent(TEvent event, Emitter<TState> emit);
 
   void emitError(ErrorEvent event) {
     _bloc.emitError(event);
