@@ -1,4 +1,8 @@
 import 'package:bloc_process/bloc_process.dart';
+import 'package:example/processes/multi/state/bloc/multi_bloc.dart';
+import 'package:example/processes/multi/state/controller/multi_process_controller.dart';
+import 'package:example/processes/multi/state/io/multi_input.dart';
+import 'package:example/processes/multi/state/navigation/multi_navigator.dart';
 import 'package:example/processes/registration/state/bloc/registration_process_bloc.dart';
 import 'package:example/processes/registration/state/chain/registration_link.dart';
 import 'package:example/processes/registration/state/controller/registration_process_controller.dart';
@@ -336,9 +340,25 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               onPressed: () => _startProcessChainShowcase(context),
             ),
+            TextButton(
+              child: const Text("Multi Channel Demo",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              onPressed: () => _startMultiChannel(context),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  void _startMultiChannel(BuildContext context) {
+    final bloc = MultiBloc();
+
+    final controller = MultiProcessController(
+      bloc: bloc,
+      navigationBuilder: (context) => MultiNavigator(context, bloc),
+    );
+
+    controller.start(context, MultiInput(), (output) {});
   }
 }
