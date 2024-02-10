@@ -1,0 +1,1 @@
+class ProcessAlreadyCompletedError extends Error {}

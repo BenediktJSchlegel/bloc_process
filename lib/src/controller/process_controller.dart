@@ -5,6 +5,7 @@ import 'package:bloc_process/src/helper/bloc_dependant.dart';
 import 'package:flutter/widgets.dart';
 
 import '../bloc/interfaces/process_bloc_event.dart';
+import '../exceptions/process_already_completed_error.dart';
 import '../exceptions/process_already_started_error.dart';
 import '../exceptions/process_not_started_error.dart';
 import '../navigation/navigation_handler.dart';
@@ -93,6 +94,10 @@ class ProcessController<
   void revive() {
     if (!_hasBeenStarted) {
       throw ProcessNotStartedError();
+    }
+
+    if (!_persistAfterCompletion) {
+      throw ProcessAlreadyCompletedError();
     }
 
     _navigationHandler.revive();
