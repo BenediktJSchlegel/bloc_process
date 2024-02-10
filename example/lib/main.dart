@@ -45,6 +45,83 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  ShowcaseLinkInput _buildInput(Color color) {
+    return ShowcaseLinkInput(
+      [],
+      "_previousProcessName",
+      "_headerText",
+      "continue",
+      color,
+      false,
+      false,
+      "_previousAction",
+    );
+  }
+
+  void _startNavigationConfigurationShowcase(BuildContext context) {
+    final ShowcaseBloc one = ShowcaseBloc();
+    final ShowcaseBloc two = ShowcaseBloc();
+    final ShowcaseBloc three = ShowcaseBloc();
+
+    final oneController = ShowcaseController(
+      bloc: one,
+      navigationBuilder: (ctx) => ShowcaseNavigator(one, ctx),
+      persistAfterCompletion: false,
+      navigationConfiguration: NavigationConfiguration(
+        onStart: NavigationBehaviour.navigation,
+        onEnd: NavigationBehaviour.noNavigation,
+        onRevive: NavigationBehaviour.noNavigation,
+      ),
+    );
+
+    final twoController = ShowcaseController(
+      bloc: two,
+      navigationBuilder: (ctx) =>
+          ShowcaseNavigator(two, ctx, pushReplaceStart: true),
+      persistAfterCompletion: false,
+      navigationConfiguration: NavigationConfiguration(
+        onStart: NavigationBehaviour.navigation,
+        onEnd: NavigationBehaviour.noNavigation,
+        onRevive: NavigationBehaviour.noNavigation,
+      ),
+    );
+
+    final threeController = ShowcaseController(
+      bloc: three,
+      navigationBuilder: (ctx) =>
+          ShowcaseNavigator(three, ctx, pushReplaceStart: true),
+      persistAfterCompletion: false,
+      navigationConfiguration: NavigationConfiguration(
+        onStart: NavigationBehaviour.navigation,
+        onEnd: NavigationBehaviour.navigation,
+        onRevive: NavigationBehaviour.noNavigation,
+      ),
+    );
+
+    ProcessChain<ShowcaseLinkInput, ShowcaseLinkOutput> chain =
+        ProcessChain<ShowcaseLinkInput, ShowcaseLinkOutput>(
+      links: [
+        ShowcaseLink(
+          oneController,
+          outputTransformer: (input) => _buildInput(Colors.red),
+        ),
+        ShowcaseLink(
+          twoController,
+          outputTransformer: (input) => _buildInput(Colors.blue),
+        ),
+        ShowcaseLink(
+          threeController,
+          outputTransformer: (input) => ShowcaseLinkOutput(
+              _buildInput(Colors.yellow), "_processName", "_action"),
+        ),
+      ],
+      context: context,
+      onEndCallback: (ShowcaseLinkOutput output) {},
+    );
+
+    chain.start(_buildInput(Colors.orange));
+  }
+
   void _startProcessChainShowcase(BuildContext context) {
     final ShowcaseBloc one = ShowcaseBloc();
     final ShowcaseBloc two = ShowcaseBloc();
@@ -344,6 +421,11 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text("Multi Channel Demo",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               onPressed: () => _startMultiChannel(context),
+            ),
+            TextButton(
+              child: const Text("Navigation Configuration Demo",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              onPressed: () => _startNavigationConfigurationShowcase(context),
             ),
           ],
         ),

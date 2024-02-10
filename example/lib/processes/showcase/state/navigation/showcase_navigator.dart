@@ -7,9 +7,14 @@ import 'package:flutter/material.dart';
 class ShowcaseNavigator extends ProcessNavigator<ShowcaseBloc, ShowcaseState> {
   final BuildContext _context;
   final ShowcasePage _page;
+  final bool _pushReplaceStart;
 
-  ShowcaseNavigator(ShowcaseBloc bloc, this._context)
-      : _page = ShowcasePage(bloc);
+  ShowcaseNavigator(
+    ShowcaseBloc bloc,
+    this._context, {
+    bool pushReplaceStart = false,
+  })  : _page = ShowcasePage(bloc),
+        _pushReplaceStart = pushReplaceStart;
 
   @override
   void onEnd(ShowcaseBloc bloc) {
@@ -18,7 +23,13 @@ class ShowcaseNavigator extends ProcessNavigator<ShowcaseBloc, ShowcaseState> {
 
   @override
   void onStart(ShowcaseBloc bloc) {
-    Navigator.of(_context).push(MaterialPageRoute(builder: (context) => _page));
+    if (_pushReplaceStart) {
+      Navigator.of(_context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => _page));
+    } else {
+      Navigator.of(_context)
+          .push(MaterialPageRoute(builder: (context) => _page));
+    }
   }
 
   @override
