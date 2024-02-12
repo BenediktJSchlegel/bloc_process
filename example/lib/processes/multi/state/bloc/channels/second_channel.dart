@@ -10,7 +10,7 @@ class SecondChannel
   SecondChannel(super.bloc);
 
   @override
-  void onEvent(SecondMultiEvent event, Emitter<MultiState> emit) {
+  Future<void> onEvent(SecondMultiEvent event, Emitter<MultiState> emit) async {
     emit(MultiState("Second"));
   }
 }

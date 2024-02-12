@@ -9,7 +9,7 @@ abstract class MultiChannelProcessBloc<
   late final List<BlocChannel> _channels;
 
   MultiChannelProcessBloc(super.initialState) {
-    on<TEvent>((event, emit) {
+    on<TEvent>((event, emit) async {
       final List<BlocChannel> applicableChannels =
           _channels.where((element) => element.isHandledBy(event)).toList();
 
@@ -19,7 +19,7 @@ abstract class MultiChannelProcessBloc<
         throw AmbiguousBlocEventError();
       }
 
-      applicableChannels.first.onEvent(event, emit);
+      await applicableChannels.first.onEvent(event, emit);
     });
   }
 
