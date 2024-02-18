@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 
 import '../../bloc_process.dart';
-import '../error/error_event.dart';
 import 'completable_bloc.dart';
 
 class ErrorProducingBloc<

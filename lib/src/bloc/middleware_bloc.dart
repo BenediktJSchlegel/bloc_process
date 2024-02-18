@@ -1,12 +1,7 @@
-import 'package:bloc_process/src/middleware/effect_middleware.dart';
-import 'package:bloc_process/src/middleware/error_middleware.dart';
-import 'package:bloc_process/src/middleware/event_middleware.dart';
-import 'package:bloc_process/src/middleware/state_middleware.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc_process.dart';
-import '../middleware/middleware.dart';
 
 abstract class MiddlewareBloc<TEvent extends ProcessBlocEvent,
     TState extends ProcessBlocState> extends Bloc<TEvent, TState> {

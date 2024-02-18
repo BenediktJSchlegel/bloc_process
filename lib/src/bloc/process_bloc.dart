@@ -1,5 +1,4 @@
 import 'package:bloc_process/src/bloc/effect_producing_bloc.dart';
-import 'package:bloc_process/src/bloc/error_producing_bloc.dart';
 import 'package:bloc_process/src/bloc/interfaces/process_bloc_event.dart';
 import 'package:bloc_process/src/bloc/interfaces/process_bloc_state.dart';
 import 'package:flutter/cupertino.dart';

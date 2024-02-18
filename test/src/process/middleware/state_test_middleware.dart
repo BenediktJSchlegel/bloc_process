@@ -6,7 +6,6 @@ import 'package:mockito/annotations.dart';
 class StateTestMiddleware implements StateMiddleware {
   @override
   Future<void> onStateChanged(ProcessBlocState state) {
-    print("WORKED");
     return Future.value();
   }
 }

@@ -4,9 +4,6 @@ import 'package:bloc_process/src/bloc/error_producing_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../bloc_process.dart';
-import '../effects/effect.dart';
-import '../error/error_event.dart';
-import 'completable_bloc.dart';
 
 class EffectProducingBloc<
     TEvent extends ProcessBlocEvent,
