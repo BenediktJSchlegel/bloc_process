@@ -1,3 +1,6 @@
+## 0.2.1
+extended listener widgets with effect stream
+
 ## 0.2.0
 effect stream support
 middleware support

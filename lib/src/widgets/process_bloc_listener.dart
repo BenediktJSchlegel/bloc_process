@@ -23,7 +23,8 @@ class ProcessBlocListener<
         TReturn,
         TBloc extends ProcessBloc<TInput, TEvent, TState, TReturn>>
     extends StatefulWidget {
-  final Function(ErrorEvent event)? onErrorCallback;
+  final Function(ErrorEvent event)? onError;
+  final Function(Effect effect)? onEffect;
   final TBloc bloc;
   final BlocWidgetListener<TState> listener;
   final BlocListenerCondition<TState>? listenWhen;
@@ -32,7 +33,8 @@ class ProcessBlocListener<
   const ProcessBlocListener({
     super.key,
     required this.bloc,
-    required this.onErrorCallback,
+    required this.onError,
+    required this.onEffect,
     required this.listener,
     this.listenWhen,
     this.child,
@@ -50,13 +52,18 @@ class _ProcessBlocListenerState<
         TBloc extends ProcessBloc<TInput, TEvent, TState, TReturn>>
     extends State<ProcessBlocListener<TInput, TEvent, TState, TReturn, TBloc>> {
   StreamSubscription? _errorSubscription;
+  StreamSubscription? _effectSubscription;
 
   @override
   void initState() {
     super.initState();
 
     _errorSubscription = widget.bloc.errorStream.listen((event) {
-      widget.onErrorCallback?.call(event);
+      widget.onError?.call(event);
+    });
+
+    _effectSubscription = widget.bloc.effectStream.listen((event) {
+      widget.onEffect?.call(event);
     });
   }
 
@@ -65,6 +72,7 @@ class _ProcessBlocListenerState<
     super.dispose();
 
     _errorSubscription?.cancel();
+    _effectSubscription?.cancel();
   }
 
   @override
