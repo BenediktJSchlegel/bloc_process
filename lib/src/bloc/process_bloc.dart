@@ -1,6 +1,7 @@
-import 'package:bloc_process/src/bloc/error_producing_bloc.dart';
+import 'package:bloc_process/src/bloc/effect_producing_bloc.dart';
 import 'package:bloc_process/src/bloc/interfaces/process_bloc_event.dart';
 import 'package:bloc_process/src/bloc/interfaces/process_bloc_state.dart';
+import 'package:flutter/cupertino.dart';
 
 /// abstract class for the `ProcessBloc` which controls the `BlocProcess`.
 ///
@@ -17,11 +18,21 @@ abstract class ProcessBloc<
     TInput,
     TEvent extends ProcessBlocEvent,
     TState extends ProcessBlocState,
-    TOutput> extends ErrorProducingBloc<TEvent, TState, TOutput> {
+    TOutput> extends EffectProducingBloc<TEvent, TState, TOutput> {
   ProcessBloc(super.initialState);
 
   /// Called when `ProcessController.start()` gets called. [input] corresponds to the input to said method.
   initialize(TInput input);
+
+  @override
+  @mustCallSuper
+  void add(TEvent event) {
+    eventMiddleware?.forEach((middleware) {
+      middleware.onEvent(event);
+    });
+
+    super.add(event);
+  }
 
   /// Called when the process starts, and the `NavigationBehaviour` of the
   /// `NavigationConfiguration` is set to `NavigationBehaviour.callback`

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 
 import '../../bloc_process.dart';
-import '../error/error_event.dart';
 import 'completable_bloc.dart';
 
 class ErrorProducingBloc<
@@ -31,6 +30,10 @@ class ErrorProducingBloc<
   Stream<ErrorEvent> get errorStream => _controller.stream;
 
   void emitError(ErrorEvent event) {
+    errorMiddleware?.forEach((middleware) {
+      middleware.onError(event);
+    });
+
     _controller.add(event);
   }
 
