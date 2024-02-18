@@ -5,14 +5,15 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
 
-import 'package:bloc_process/bloc_process.dart' as _i5;
-import 'package:flutter_bloc/flutter_bloc.dart' as _i9;
+import 'package:bloc_process/bloc_process.dart' as _i6;
+import 'package:bloc_process/src/effects/effect.dart' as _i5;
+import 'package:flutter_bloc/flutter_bloc.dart' as _i10;
 import 'package:mockito/mockito.dart' as _i1;
 
-import '../io/test_input.dart' as _i7;
-import '../io/test_output.dart' as _i6;
+import '../io/test_input.dart' as _i8;
+import '../io/test_output.dart' as _i7;
 import 'test_bloc.dart' as _i3;
-import 'test_event.dart' as _i8;
+import 'test_event.dart' as _i9;
 import 'test_state.dart' as _i2;
 
 // ignore_for_file: type=lint
@@ -43,21 +44,28 @@ class _FakeTestState_0 extends _i1.SmartFake implements _i2.TestState {
 /// See the documentation for Mockito's code generation for more information.
 class MockTestBloc extends _i1.Mock implements _i3.TestBloc {
   @override
-  _i4.Stream<_i5.ErrorEvent> get errorStream => (super.noSuchMethod(
+  _i4.Stream<_i5.Effect> get effectStream => (super.noSuchMethod(
+        Invocation.getter(#effectStream),
+        returnValue: _i4.Stream<_i5.Effect>.empty(),
+        returnValueForMissingStub: _i4.Stream<_i5.Effect>.empty(),
+      ) as _i4.Stream<_i5.Effect>);
+
+  @override
+  _i4.Stream<_i6.ErrorEvent> get errorStream => (super.noSuchMethod(
         Invocation.getter(#errorStream),
-        returnValue: _i4.Stream<_i5.ErrorEvent>.empty(),
-        returnValueForMissingStub: _i4.Stream<_i5.ErrorEvent>.empty(),
-      ) as _i4.Stream<_i5.ErrorEvent>);
+        returnValue: _i4.Stream<_i6.ErrorEvent>.empty(),
+        returnValueForMissingStub: _i4.Stream<_i6.ErrorEvent>.empty(),
+      ) as _i4.Stream<_i6.ErrorEvent>);
 
   @override
-  void Function(_i6.TestOutput) get completeCallback => (super.noSuchMethod(
+  void Function(_i7.TestOutput) get completeCallback => (super.noSuchMethod(
         Invocation.getter(#completeCallback),
-        returnValue: (_i6.TestOutput value) {},
-        returnValueForMissingStub: (_i6.TestOutput value) {},
-      ) as void Function(_i6.TestOutput));
+        returnValue: (_i7.TestOutput value) {},
+        returnValueForMissingStub: (_i7.TestOutput value) {},
+      ) as void Function(_i7.TestOutput));
 
   @override
-  set completeCallback(void Function(_i6.TestOutput)? _completeCallback) =>
+  set completeCallback(void Function(_i7.TestOutput)? _completeCallback) =>
       super.noSuchMethod(
         Invocation.setter(
           #completeCallback,
@@ -104,10 +112,19 @@ class MockTestBloc extends _i1.Mock implements _i3.TestBloc {
       ) as bool);
 
   @override
-  dynamic initialize(_i7.TestInput? input) => super.noSuchMethod(
+  dynamic initialize(_i8.TestInput? input) => super.noSuchMethod(
         Invocation.method(
           #initialize,
           [input],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void add(_i9.TestEvent? event) => super.noSuchMethod(
+        Invocation.method(
+          #add,
+          [event],
         ),
         returnValueForMissingStub: null,
       );
@@ -143,9 +160,9 @@ class MockTestBloc extends _i1.Mock implements _i3.TestBloc {
       ) as bool);
 
   @override
-  void emitError(_i5.ErrorEvent? event) => super.noSuchMethod(
+  void emitEffect(_i5.Effect? event) => super.noSuchMethod(
         Invocation.method(
-          #emitError,
+          #emitEffect,
           [event],
         ),
         returnValueForMissingStub: null,
@@ -162,7 +179,16 @@ class MockTestBloc extends _i1.Mock implements _i3.TestBloc {
       ) as _i4.Future<void>);
 
   @override
-  void complete(_i6.TestOutput? value) => super.noSuchMethod(
+  void emitError(_i6.ErrorEvent? event) => super.noSuchMethod(
+        Invocation.method(
+          #emitError,
+          [event],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void complete(_i7.TestOutput? value) => super.noSuchMethod(
         Invocation.method(
           #complete,
           [value],
@@ -181,7 +207,7 @@ class MockTestBloc extends _i1.Mock implements _i3.TestBloc {
 
   @override
   void mountCallbacks(
-    void Function(_i6.TestOutput)? callback,
+    void Function(_i7.TestOutput)? callback,
     void Function(int)? backOut,
   ) =>
       super.noSuchMethod(
@@ -196,16 +222,16 @@ class MockTestBloc extends _i1.Mock implements _i3.TestBloc {
       );
 
   @override
-  void add(_i8.TestEvent? event) => super.noSuchMethod(
+  void mountMiddleware(List<_i6.Middleware>? middleware) => super.noSuchMethod(
         Invocation.method(
-          #add,
-          [event],
+          #mountMiddleware,
+          [middleware],
         ),
         returnValueForMissingStub: null,
       );
 
   @override
-  void onEvent(_i8.TestEvent? event) => super.noSuchMethod(
+  void onEvent(_i9.TestEvent? event) => super.noSuchMethod(
         Invocation.method(
           #onEvent,
           [event],
@@ -223,9 +249,9 @@ class MockTestBloc extends _i1.Mock implements _i3.TestBloc {
       );
 
   @override
-  void on<E extends _i8.TestEvent>(
-    _i9.EventHandler<E, _i2.TestState>? handler, {
-    _i9.EventTransformer<E>? transformer,
+  void on<E extends _i9.TestEvent>(
+    _i10.EventHandler<E, _i2.TestState>? handler, {
+    _i10.EventTransformer<E>? transformer,
   }) =>
       super.noSuchMethod(
         Invocation.method(
@@ -237,7 +263,8 @@ class MockTestBloc extends _i1.Mock implements _i3.TestBloc {
       );
 
   @override
-  void onTransition(_i9.Transition<_i8.TestEvent, _i2.TestState>? transition) =>
+  void onTransition(
+          _i10.Transition<_i9.TestEvent, _i2.TestState>? transition) =>
       super.noSuchMethod(
         Invocation.method(
           #onTransition,
@@ -247,7 +274,7 @@ class MockTestBloc extends _i1.Mock implements _i3.TestBloc {
       );
 
   @override
-  void onChange(_i9.Change<_i2.TestState>? change) => super.noSuchMethod(
+  void onChange(_i10.Change<_i2.TestState>? change) => super.noSuchMethod(
         Invocation.method(
           #onChange,
           [change],

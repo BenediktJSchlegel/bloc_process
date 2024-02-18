@@ -4,16 +4,13 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import 'src/process/bloc/test_bloc.dart';
-import 'src/process/bloc/test_bloc.mocks.dart';
 import 'src/process/bloc/test_state.dart';
 import 'src/process/chain/test_link.dart';
 import 'src/process/chain/test_link.mocks.dart';
 import 'src/process/io/test_input.dart';
 import 'src/process/io/test_output.dart';
 import 'src/process/navigation/test_navigator.dart';
-import 'src/process/navigation/test_navigator.mocks.dart';
 import 'src/process/test_process_controller.dart';
-import 'src/process/test_process_controller.mocks.dart';
 
 class MockBuildContext extends Mock implements BuildContext {}
 

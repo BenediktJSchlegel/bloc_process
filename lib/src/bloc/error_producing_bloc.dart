@@ -31,6 +31,10 @@ class ErrorProducingBloc<
   Stream<ErrorEvent> get errorStream => _controller.stream;
 
   void emitError(ErrorEvent event) {
+    errorMiddleware?.forEach((middleware) {
+      middleware.onError(event);
+    });
+
     _controller.add(event);
   }
 
