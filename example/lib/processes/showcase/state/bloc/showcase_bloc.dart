@@ -31,7 +31,7 @@ class ShowcaseBloc extends ProcessBloc<ShowcaseLinkInput, ShowcaseEvent,
           emitError(ErrorEvent((event as ShowcaseCauseErrorEvent).message));
           break;
         case ShowcaseCanceledEvent:
-          backOut(1);
+          backOut();
           break;
       }
     });

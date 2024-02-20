@@ -23,6 +23,8 @@ export 'src/exceptions/process_already_started_error.dart';
 export 'src/exceptions/type_io_error.dart';
 export 'src/exceptions/multi_channel/ambiguous_bloc_event_error.dart';
 export 'src/exceptions/multi_channel/unhandled_bloc_event_error.dart';
+export 'src/exceptions/back_out/no_back_out_reference_error.dart';
+export 'src/exceptions/back_out/unknown_back_out_reference_error.dart';
 
 export 'src/chain/process_chain.dart';
 export 'src/chain/links/breakout_link.dart';

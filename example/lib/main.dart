@@ -173,41 +173,116 @@ class _MyHomePageState extends State<MyHomePage> {
       persistAfterCompletion: true,
     );
 
+    final first = ShowcaseLink(
+      oneController,
+      outputTransformer: (output) => _transformOutput(
+        output,
+        "Second Process",
+        "Continue to third",
+        Colors.red,
+      ),
+    );
+
+    final second = ShowcaseLink(
+      twoController,
+      backOutReference: first,
+      inputTransformer: (input) {
+        input as ShowcaseLinkInput;
+
+        return ShowcaseLinkInput(
+          input.previousProcessNames,
+          input.previousProcessName,
+          input.headerText,
+          input.continueText,
+          input.color,
+          true,
+          false,
+          input.previousAction,
+        );
+      },
+      outputTransformer: (output) => _transformOutput(
+        output,
+        "Third Process",
+        "Continue to fourth",
+        Colors.yellow,
+      ),
+    );
+
+    final third = ShowcaseLink(
+      threeController,
+      backOutReference: second,
+      outputTransformer: (output) => _transformOutput(
+        output,
+        "Fourth Process",
+        "Continue to fifth",
+        Colors.purple,
+      ),
+    );
+
+    final fourth = ShowcaseLink(
+      fourController,
+      backOutReference: third,
+      inputTransformer: (input) {
+        input as ShowcaseLinkInput;
+
+        return ShowcaseLinkInput(
+          input.previousProcessNames,
+          input.previousProcessName,
+          input.headerText,
+          input.continueText,
+          input.color,
+          false,
+          true,
+          input.previousAction,
+        );
+      },
+      outputTransformer: (output) => _transformOutput(
+        output,
+        "Fifth Process",
+        "Continue to sixth",
+        Colors.pinkAccent,
+      ),
+    );
+
+    final fifth = ShowcaseLink(
+      fiveController,
+      backOutReference: fourth,
+      inputTransformer: (input) {
+        return ShowcaseLinkInput(
+          input.previousProcessNames,
+          input.previousProcessName,
+          input.headerText,
+          input.continueText,
+          input.color,
+          true,
+          true,
+          input.previousAction,
+        );
+      },
+      outputTransformer: (output) => _transformOutput(
+        output,
+        "Sixth Process",
+        "Continue to seventh",
+        Colors.white24,
+      ),
+    );
+
+    final sixth = ShowcaseLink(
+      sixController,
+      backOutReference: fifth,
+      outputTransformer: (output) => _transformOutput(
+        output,
+        "Seventh Process",
+        "end chain",
+        Colors.teal,
+      ),
+    );
+
     ProcessChain<ShowcaseLinkInput, ShowcaseLinkOutput> chain =
         ProcessChain<ShowcaseLinkInput, ShowcaseLinkOutput>(
       links: [
-        ShowcaseLink(
-          oneController,
-          outputTransformer: (output) => _transformOutput(
-            output,
-            "Second Process",
-            "Continue to third",
-            Colors.red,
-          ),
-        ),
-        ShowcaseLink(
-          twoController,
-          inputTransformer: (input) {
-            input as ShowcaseLinkInput;
-
-            return ShowcaseLinkInput(
-              input.previousProcessNames,
-              input.previousProcessName,
-              input.headerText,
-              input.continueText,
-              input.color,
-              true,
-              false,
-              input.previousAction,
-            );
-          },
-          outputTransformer: (output) => _transformOutput(
-            output,
-            "Third Process",
-            "Continue to fourth",
-            Colors.yellow,
-          ),
-        ),
+        first,
+        second,
         DecisionLink(
           condition: (input) => input.previousAction == "skip",
           then: PassLink(
@@ -228,39 +303,9 @@ class _MyHomePageState extends State<MyHomePage> {
               );
             },
           ),
-          elseThen: ShowcaseLink(
-            threeController,
-            outputTransformer: (output) => _transformOutput(
-              output,
-              "Fourth Process",
-              "Continue to fifth",
-              Colors.purple,
-            ),
-          ),
+          elseThen: third,
         ),
-        ShowcaseLink(
-          fourController,
-          inputTransformer: (input) {
-            input as ShowcaseLinkInput;
-
-            return ShowcaseLinkInput(
-              input.previousProcessNames,
-              input.previousProcessName,
-              input.headerText,
-              input.continueText,
-              input.color,
-              false,
-              true,
-              input.previousAction,
-            );
-          },
-          outputTransformer: (output) => _transformOutput(
-            output,
-            "Fifth Process",
-            "Continue to sixth",
-            Colors.pinkAccent,
-          ),
-        ),
+        fourth,
         DecisionLink(
           condition: (input) => input.previousAction == "breakout",
           then: BreakoutLink(
@@ -287,27 +332,7 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
         ),
-        ShowcaseLink(
-          fiveController,
-          inputTransformer: (input) {
-            return ShowcaseLinkInput(
-              input.previousProcessNames,
-              input.previousProcessName,
-              input.headerText,
-              input.continueText,
-              input.color,
-              true,
-              true,
-              input.previousAction,
-            );
-          },
-          outputTransformer: (output) => _transformOutput(
-            output,
-            "Sixth Process",
-            "Continue to seventh",
-            Colors.white24,
-          ),
-        ),
+        fifth,
         DecisionLink(
           condition: (input) => input.previousAction == "breakout",
           then: BreakoutLink(
@@ -335,18 +360,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
-            elseThen: ShowcaseLink(
-              sixController,
-              outputTransformer: (output) => _transformOutput(
-                output,
-                "Seventh Process",
-                "end chain",
-                Colors.teal,
-              ),
-            ),
+            elseThen: sixth,
           ),
         ),
-        ShowcaseLink(sevenController),
+        ShowcaseLink(sevenController, backOutReference: sixth),
       ],
       context: context,
       onEndCallback: (_) => {print("finished process")},

@@ -3,10 +3,11 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/cupertino.dart' as _i3;
+import 'package:bloc_process/bloc_process.dart' as _i3;
+import 'package:flutter/cupertino.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 
-import '../io/test_input.dart' as _i4;
+import '../io/test_input.dart' as _i5;
 import 'test_link.dart' as _i2;
 
 // ignore_for_file: type=lint
@@ -37,10 +38,68 @@ class _FakeType_0 extends _i1.SmartFake implements Type {
 /// See the documentation for Mockito's code generation for more information.
 class MockTestLink extends _i1.Mock implements _i2.TestLink {
   @override
-  set onBackOut(void Function(int)? _onBackOut) => super.noSuchMethod(
+  set onBackOut(
+          void Function(
+                  _i3.ProcessLink<
+                      dynamic,
+                      _i3.ProcessBlocEvent,
+                      _i3.ProcessBlocState,
+                      dynamic,
+                      _i3.ProcessBloc<dynamic, _i3.ProcessBlocEvent,
+                          _i3.ProcessBlocState, dynamic>,
+                      _i3.ProcessNavigator<
+                          _i3.ProcessBloc<dynamic, _i3.ProcessBlocEvent,
+                              _i3.ProcessBlocState, dynamic>,
+                          _i3.ProcessBlocState>,
+                      _i3.ProcessController<
+                          dynamic,
+                          _i3.ProcessBlocEvent,
+                          _i3.ProcessBlocState,
+                          dynamic,
+                          _i3.ProcessBloc<dynamic, _i3.ProcessBlocEvent,
+                              _i3.ProcessBlocState, dynamic>,
+                          _i3.ProcessNavigator<
+                              _i3.ProcessBloc<dynamic, _i3.ProcessBlocEvent,
+                                  _i3.ProcessBlocState, dynamic>,
+                              _i3.ProcessBlocState>>>)?
+              _onBackOut) =>
+      super.noSuchMethod(
         Invocation.setter(
           #onBackOut,
           _onBackOut,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set backOutReference(
+          _i3.ProcessLink<
+                  dynamic,
+                  _i3.ProcessBlocEvent,
+                  _i3.ProcessBlocState,
+                  dynamic,
+                  _i3.ProcessBloc<dynamic, _i3.ProcessBlocEvent,
+                      _i3.ProcessBlocState, dynamic>,
+                  _i3.ProcessNavigator<
+                      _i3.ProcessBloc<dynamic, _i3.ProcessBlocEvent,
+                          _i3.ProcessBlocState, dynamic>,
+                      _i3.ProcessBlocState>,
+                  _i3.ProcessController<
+                      dynamic,
+                      _i3.ProcessBlocEvent,
+                      _i3.ProcessBlocState,
+                      dynamic,
+                      _i3.ProcessBloc<dynamic, _i3.ProcessBlocEvent,
+                          _i3.ProcessBlocState, dynamic>,
+                      _i3.ProcessNavigator<
+                          _i3.ProcessBloc<dynamic, _i3.ProcessBlocEvent,
+                              _i3.ProcessBlocState, dynamic>,
+                          _i3.ProcessBlocState>>>?
+              _backOutReference) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #backOutReference,
+          _backOutReference,
         ),
         returnValueForMissingStub: null,
       );
@@ -82,8 +141,8 @@ class MockTestLink extends _i1.Mock implements _i2.TestLink {
 
   @override
   void start(
-    _i3.BuildContext? context,
-    _i4.TestInput? input,
+    _i4.BuildContext? context,
+    _i5.TestInput? input,
   ) =>
       super.noSuchMethod(
         Invocation.method(
@@ -113,6 +172,16 @@ class MockTestLink extends _i1.Mock implements _i2.TestLink {
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  bool isStarted() => (super.noSuchMethod(
+        Invocation.method(
+          #isStarted,
+          [],
+        ),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
 
   @override
   bool isInputType(dynamic value) => (super.noSuchMethod(

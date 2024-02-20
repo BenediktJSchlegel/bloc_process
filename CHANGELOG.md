@@ -1,3 +1,6 @@
+## 0.2.2
+back out rework
+
 ## 0.2.1
 extended listener widgets with effect stream
 

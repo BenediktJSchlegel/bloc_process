@@ -1,9 +1,6 @@
 import 'package:bloc_process/bloc_process.dart';
 import 'package:flutter/widgets.dart';
 
-import '../exceptions/backed_out_of_process_chain_error.dart';
-import '../exceptions/previous_link_is_not_process_error.dart';
-
 /// Controls the flow of multiple processes in order.
 ///
 /// ---
@@ -57,6 +54,10 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
       link.onBackOut = _onBackOut;
     }
 
+    if (link is DecisionLink) {
+      _setBackOutCallbacksForDecisionLink(link);
+    }
+
     link.onEnd = (dynamic out) => _onLinkCompleted(out, link is BreakoutLink);
   }
 
@@ -93,20 +94,22 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
     }
   }
 
-  void _onBackOut(int steps) {
-    _index -= steps;
-
-    if (_index < 0) {
-      throw BackedOutOfProcessChainError();
+  void _onBackOut(ProcessLink callingLink) {
+    if (callingLink.backOutReference == null) {
+      throw NoBackOutReferenceError();
     }
 
-    ChainLink link = _links[_index];
+    ProcessLink newLink = callingLink.backOutReference!;
 
-    if (link is! ProcessLink) {
-      throw PreviousLinkIsNotProcessError();
+    int? newLinkIndex = _findBackOutLinkIndex(newLink);
+
+    if (newLinkIndex == null) {
+      throw UnknownBackOutReferenceError();
     }
 
-    link.revive();
+    _index = newLinkIndex;
+
+    newLink.revive();
   }
 
   bool _isLastLink() {
@@ -120,6 +123,64 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
   void _closeLink(ChainLink link) {
     if (link is ProcessLink) {
       link.fullyClose();
+    }
+  }
+
+  int? _findBackOutLinkIndex(ProcessLink target) {
+    int index = _links.indexOf(target);
+
+    if (index != -1) {
+      return index;
+    }
+
+    for (ChainLink link in _links) {
+      if (link is DecisionLink) {
+        if (_decisionLinkContainsTarget(link, target)) {
+          index = _links.indexOf(link);
+
+          if (index != -1) {
+            return index;
+          }
+        }
+      }
+    }
+
+    return null;
+  }
+
+  bool _decisionLinkContainsTarget(DecisionLink link, ProcessLink target) {
+    List<ChainLink> links = [link.then, link.elseThen];
+
+    while (links.isNotEmpty) {
+      ChainLink l = links.first;
+
+      if (l == target) {
+        return true;
+      } else if (l is DecisionLink) {
+        links.add(l.then);
+        links.add(l.elseThen);
+      }
+
+      links.remove(l);
+    }
+
+    return false;
+  }
+
+  void _setBackOutCallbacksForDecisionLink(DecisionLink link) {
+    List<ChainLink> links = [link.then, link.elseThen];
+
+    while (links.isNotEmpty) {
+      ChainLink l = links.first;
+
+      if (l is ProcessLink) {
+        l.onBackOut = _onBackOut;
+      } else if (l is DecisionLink) {
+        links.add(l.then);
+        links.add(l.elseThen);
+      }
+
+      links.remove(l);
     }
   }
 }
