@@ -20,5 +20,6 @@ class ShowcaseLink extends ProcessLink<
     super.controller, {
     super.outputTransformer,
     super.inputTransformer,
+    super.backOutReference,
   });
 }

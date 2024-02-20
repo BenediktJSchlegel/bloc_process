@@ -66,7 +66,7 @@ class MockTestProcessController extends _i1.Mock
     _i4.BuildContext? context,
     _i5.TestInput? input,
     void Function(_i6.TestOutput)? callback, [
-    void Function(int)? backOut,
+    void Function()? backOut,
   ]) =>
       super.noSuchMethod(
         Invocation.method(
@@ -98,4 +98,14 @@ class MockTestProcessController extends _i1.Mock
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  bool isStarted() => (super.noSuchMethod(
+        Invocation.method(
+          #isStarted,
+          [],
+        ),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
 }

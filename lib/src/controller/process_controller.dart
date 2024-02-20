@@ -42,7 +42,7 @@ class ProcessController<
   final ProcessNavigator Function(BuildContext context) _navigationBuilder;
 
   late final void Function(TOutput value) _completedCallback;
-  late final void Function(int steps)? _backOutCallback;
+  late final void Function()? _backOutCallback;
 
   final bool _persistAfterCompletion;
 
@@ -70,7 +70,7 @@ class ProcessController<
     BuildContext context,
     TInput input,
     void Function(TOutput output) callback, [
-    void Function(int steps)? backOut,
+    void Function()? backOut,
   ]) {
     if (_hasBeenStarted && !_allowRestart) {
       throw ProcessAlreadyStartedError();
@@ -108,13 +108,13 @@ class ProcessController<
     _closeDependencies();
   }
 
-  void _onBackOut(int steps) {
+  void _onBackOut() {
     _navigationHandler.end();
     _navigationHandler.unmount();
 
     _allowRestart = true;
 
-    _backOutCallback?.call(steps);
+    _backOutCallback?.call();
   }
 
   void _onComplete(TOutput value) {
@@ -137,4 +137,6 @@ class ProcessController<
 
     bloc.close();
   }
+
+  bool isStarted() => _hasBeenStarted;
 }

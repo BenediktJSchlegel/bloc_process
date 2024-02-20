@@ -25,6 +25,10 @@ class DecisionLink<TInput, TOutput> extends ChainLink<TInput, TOutput> {
           outputTransformer: outputTransformer,
         );
 
+  ChainLink get then => _then;
+
+  ChainLink get elseThen => _elseThen;
+
   @override
   void start(BuildContext context, TInput input) {
     _startNextLink(context, _condition(input) ? _then : _elseThen, input);

@@ -11,7 +11,7 @@ abstract class CompletableBloc<
   late final void Function(TReturn value) completeCallback;
 
   @protected
-  late final void Function(int steps)? backOutCallback;
+  late final void Function()? backOutCallback;
 
   CompletableBloc(super.initialState);
 
@@ -19,13 +19,13 @@ abstract class CompletableBloc<
     completeCallback.call(value);
   }
 
-  void backOut(int steps) {
-    backOutCallback?.call(steps);
+  void backOut() {
+    backOutCallback?.call();
   }
 
   void mountCallbacks(
     void Function(TReturn value) callback,
-    void Function(int steps) backOut,
+    void Function() backOut,
   ) {
     completeCallback = callback;
     backOutCallback = backOut;
