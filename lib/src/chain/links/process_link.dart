@@ -44,6 +44,8 @@ class ProcessLink<
           outputTransformer: outputTransformer,
         );
 
+  TProcess get controller => _controller;
+
   @override
   void start(BuildContext context, TInput input) {
     _controller.start(
