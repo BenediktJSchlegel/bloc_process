@@ -1,6 +1,8 @@
 import 'package:bloc_process/bloc_process.dart';
 import 'package:flutter/widgets.dart';
 
+import '../exceptions/canceled_outside_process_link_error.dart';
+
 /// Controls the flow of multiple processes in order.
 ///
 /// ---
@@ -91,6 +93,21 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
     } else {
       _index++;
       _next(output);
+    }
+  }
+
+  /// prematurely closes the process chain using the given `processOutput` to close the current process
+  /// and the `chainOutput` to close the ProcessChain
+  void cancel(TOutput output) {
+    final ChainLink currentLink = _links[_index];
+
+    if (currentLink is ProcessLink) {
+      currentLink.controller.cancelWithoutOutput();
+
+      _closePersistingProcessLinks();
+      _onEndCallback.call(output);
+    } else {
+      throw CanceledOutsideProcessLinkError();
     }
   }
 

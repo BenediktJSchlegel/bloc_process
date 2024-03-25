@@ -108,6 +108,16 @@ class ProcessController<
     _closeDependencies();
   }
 
+  /// prematurely terminates the process using the given `output`
+  void cancel(TOutput output) {
+    _onComplete(output);
+  }
+
+  /// prematurely terminates the process without calling the `completedCallback`
+  void cancelWithoutOutput() {
+    _close();
+  }
+
   void _onBackOut() {
     _navigationHandler.end();
     _navigationHandler.unmount();
