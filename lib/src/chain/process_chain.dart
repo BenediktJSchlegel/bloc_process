@@ -106,16 +106,16 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
 
       _closePersistingProcessLinks();
       _onEndCallback.call(output);
-    } else if(currentLink is DecisionLink){
+    } else if (currentLink is DecisionLink) {
       ProcessLink? processLink;
 
-      if(currentLink.then is ProcessLink && (currentLink.then as ProcessLink).isStarted()){
-        processLink = currentLink.then;
-      }else if(currentLink.elseThen is ProcessLink && (currentLink.elseThen as ProcessLink).isStarted()){
-        processLink = currentLink.elseThen;
+      if (currentLink.then is ProcessLink && (currentLink.then as ProcessLink).isStarted()) {
+        processLink = currentLink.then as ProcessLink;
+      } else if (currentLink.elseThen is ProcessLink && (currentLink.elseThen as ProcessLink).isStarted()) {
+        processLink = currentLink.elseThen as ProcessLink;
       }
 
-      if(processLink == null){
+      if (processLink == null) {
         throw CanceledOutsideProcessLinkError();
       }
 
@@ -123,7 +123,7 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
 
       _closePersistingProcessLinks();
       _onEndCallback.call(output);
-    }else {
+    } else {
       throw CanceledOutsideProcessLinkError();
     }
   }

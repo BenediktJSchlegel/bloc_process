@@ -1,3 +1,6 @@
+## 0.2.4
+process chain canceling bugfix
+
 ## 0.2.3
 process canceling
 
