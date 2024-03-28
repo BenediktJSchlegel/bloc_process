@@ -3,10 +3,12 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:async' as _i3;
+
 import 'package:mockito/mockito.dart' as _i1;
 
-import '../bloc/test_bloc.dart' as _i3;
-import '../bloc/test_state.dart' as _i4;
+import '../bloc/test_bloc.dart' as _i4;
+import '../bloc/test_state.dart' as _i5;
 import 'test_navigator.dart' as _i2;
 
 // ignore_for_file: type=lint
@@ -27,38 +29,41 @@ import 'test_navigator.dart' as _i2;
 /// See the documentation for Mockito's code generation for more information.
 class MockTestNavigator extends _i1.Mock implements _i2.TestNavigator {
   @override
-  void onEnd(_i3.TestBloc? bloc) => super.noSuchMethod(
+  _i3.Future<void> onEnd(_i4.TestBloc? bloc) => (super.noSuchMethod(
         Invocation.method(
           #onEnd,
           [bloc],
         ),
-        returnValueForMissingStub: null,
-      );
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
 
   @override
-  void onRevive(_i3.TestBloc? bloc) => super.noSuchMethod(
+  _i3.Future<void> onRevive(_i4.TestBloc? bloc) => (super.noSuchMethod(
         Invocation.method(
           #onRevive,
           [bloc],
         ),
-        returnValueForMissingStub: null,
-      );
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
 
   @override
-  void onStart(_i3.TestBloc? bloc) => super.noSuchMethod(
+  _i3.Future<void> onStart(_i4.TestBloc? bloc) => (super.noSuchMethod(
         Invocation.method(
           #onStart,
           [bloc],
         ),
-        returnValueForMissingStub: null,
-      );
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
 
   @override
-  void onStateChanged(
-    _i3.TestBloc? bloc,
-    _i4.TestState? state,
+  _i3.Future<void> onStateChanged(
+    _i4.TestBloc? bloc,
+    _i5.TestState? state,
   ) =>
-      super.noSuchMethod(
+      (super.noSuchMethod(
         Invocation.method(
           #onStateChanged,
           [
@@ -66,6 +71,7 @@ class MockTestNavigator extends _i1.Mock implements _i2.TestNavigator {
             state,
           ],
         ),
-        returnValueForMissingStub: null,
-      );
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
 }

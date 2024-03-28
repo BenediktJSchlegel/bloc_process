@@ -1,3 +1,7 @@
+## 0.3.0
+switch of callbacks to async API
+completing ProcessBloc's is now awaitable
+
 ## 0.2.4
 process chain canceling bugfix
 

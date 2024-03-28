@@ -38,7 +38,7 @@ void main() {
         navigationBuilder: (context) => navigator,
       );
 
-      controller.start(MockBuildContext(), TestInput(), (output) {});
+      controller.start(MockBuildContext(), TestInput(), (output) async {});
 
       expect(controller, isNotNull);
     });
@@ -52,10 +52,10 @@ void main() {
         navigationBuilder: (context) => navigator,
       );
 
-      controller.start(MockBuildContext(), TestInput(), (output) {});
+      controller.start(MockBuildContext(), TestInput(), (output) async {});
 
       expect(
-        () => controller.start(MockBuildContext(), TestInput(), (output) {}),
+        () => controller.start(MockBuildContext(), TestInput(), (output) async {}),
         throwsA(isA<ProcessAlreadyStartedError>()),
       );
     });
@@ -71,7 +71,7 @@ void main() {
 
       final input = TestInput();
 
-      onComplete(TestOutput o) {}
+      onComplete(TestOutput o) async {}
 
       controller.start(MockBuildContext(), input, onComplete);
 
@@ -89,7 +89,7 @@ void main() {
 
       final input = TestInput();
 
-      onComplete(TestOutput o) {}
+      onComplete(TestOutput o) async {}
 
       controller.start(MockBuildContext(), input, onComplete);
 
@@ -107,7 +107,7 @@ void main() {
 
       final input = TestInput();
 
-      controller.start(MockBuildContext(), input, (output) {});
+      controller.start(MockBuildContext(), input, (output) async {});
 
       verify(navigator.onStart(bloc));
     });
@@ -124,7 +124,7 @@ void main() {
 
       final input = TestInput();
 
-      controller.start(MockBuildContext(), input, (output) {});
+      controller.start(MockBuildContext(), input, (output) async {});
       controller.revive();
 
       verify(navigator.onRevive(bloc));
@@ -145,7 +145,7 @@ void main() {
       );
     });
 
-    test("Calls callback when completed", () {
+    test("Calls callback when completed", () async {
       final bloc = TestBloc(TestState());
       final navigator = MockTestNavigator();
 
@@ -159,12 +159,14 @@ void main() {
       controller.start(
         MockBuildContext(),
         TestInput(),
-        (output) {
+        (output) async {
           called = true;
         },
       );
 
       bloc.complete(TestOutput());
+
+      await Future.delayed(const Duration(milliseconds: 1000));
 
       expect(called, true);
     });
@@ -182,7 +184,7 @@ void main() {
       controller.start(
         MockBuildContext(),
         TestInput(),
-        (output) {},
+        (output) async {},
       );
 
       bloc.complete(TestOutput());
@@ -192,9 +194,7 @@ void main() {
       expect(controller, isNotNull);
     });
 
-    test(
-        "Can not be revived after completion when persistAfterCompletion is false",
-        () {
+    test("Can not be revived after completion when persistAfterCompletion is false", () {
       final bloc = TestBloc(TestState());
       final navigator = MockTestNavigator();
 
@@ -207,13 +207,12 @@ void main() {
       controller.start(
         MockBuildContext(),
         TestInput(),
-        (output) {},
+        (output) async {},
       );
 
       bloc.complete(TestOutput());
 
-      expect(() => controller.revive(),
-          throwsA(isA<ProcessAlreadyCompletedError>()));
+      expect(() => controller.revive(), throwsA(isA<ProcessAlreadyCompletedError>()));
     });
   });
 }

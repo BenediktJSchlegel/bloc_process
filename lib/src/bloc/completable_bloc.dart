@@ -3,29 +3,27 @@ import 'package:bloc_process/src/bloc/interfaces/process_bloc_state.dart';
 import 'package:bloc_process/src/bloc/middleware_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
-abstract class CompletableBloc<
-    TEvent extends ProcessBlocEvent,
-    TState extends ProcessBlocState,
-    TReturn> extends MiddlewareBloc<TEvent, TState> {
+abstract class CompletableBloc<TEvent extends ProcessBlocEvent, TState extends ProcessBlocState, TReturn>
+    extends MiddlewareBloc<TEvent, TState> {
   @protected
-  late final void Function(TReturn value) completeCallback;
+  late final Future<void> Function(TReturn value) completeCallback;
 
   @protected
-  late final void Function()? backOutCallback;
+  late final Future<void> Function()? backOutCallback;
 
   CompletableBloc(super.initialState);
 
-  void complete(TReturn value) {
-    completeCallback.call(value);
+  Future<void> complete(TReturn value) async {
+    await completeCallback.call(value);
   }
 
-  void backOut() {
-    backOutCallback?.call();
+  Future<void> backOut() async {
+    await backOutCallback?.call();
   }
 
   void mountCallbacks(
-    void Function(TReturn value) callback,
-    void Function() backOut,
+    Future<void> Function(TReturn value) callback,
+    Future<void> Function() backOut,
   ) {
     completeCallback = callback;
     backOutCallback = backOut;

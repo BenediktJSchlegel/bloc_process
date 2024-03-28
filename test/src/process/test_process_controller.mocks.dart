@@ -3,12 +3,14 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:async' as _i6;
+
 import 'package:flutter/widgets.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 
 import 'bloc/test_bloc.dart' as _i2;
 import 'io/test_input.dart' as _i5;
-import 'io/test_output.dart' as _i6;
+import 'io/test_output.dart' as _i7;
 import 'test_process_controller.dart' as _i3;
 
 // ignore_for_file: type=lint
@@ -65,8 +67,8 @@ class MockTestProcessController extends _i1.Mock
   void start(
     _i4.BuildContext? context,
     _i5.TestInput? input,
-    void Function(_i6.TestOutput)? callback, [
-    void Function()? backOut,
+    _i6.Future<void> Function(_i7.TestOutput)? callback, [
+    _i6.Future<void> Function()? backOut,
   ]) =>
       super.noSuchMethod(
         Invocation.method(
@@ -98,6 +100,26 @@ class MockTestProcessController extends _i1.Mock
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  _i6.Future<void> cancel(_i7.TestOutput? output) => (super.noSuchMethod(
+        Invocation.method(
+          #cancel,
+          [output],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> cancelWithoutOutput() => (super.noSuchMethod(
+        Invocation.method(
+          #cancelWithoutOutput,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
 
   @override
   bool isStarted() => (super.noSuchMethod(

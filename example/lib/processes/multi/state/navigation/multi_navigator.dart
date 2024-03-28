@@ -12,24 +12,24 @@ class MultiNavigator implements ProcessNavigator<MultiBloc, MultiState> {
   MultiNavigator(this._context, MultiBloc bloc) : _page = MultiPage(bloc);
 
   @override
-  void onEnd(MultiBloc bloc) {
+  Future<void> onEnd(MultiBloc bloc) async {
     Navigator.of(_context).pop();
   }
 
   @override
-  void onRevive(MultiBloc bloc) {
+  Future<void> onRevive(MultiBloc bloc) async {
     //
   }
 
   @override
-  void onStart(MultiBloc bloc) {
+  Future<void> onStart(MultiBloc bloc) async {
     Navigator.of(_context).push(MaterialPageRoute(
       builder: (context) => _page,
     ));
   }
 
   @override
-  void onStateChanged(MultiBloc bloc, MultiState state) {
+  Future<void> onStateChanged(MultiBloc bloc, MultiState state) async {
     //
   }
 }

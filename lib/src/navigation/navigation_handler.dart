@@ -17,42 +17,39 @@ class NavigationHandler {
     _navigator = navigator;
 
     _blocStreamSubscription = stream.listen(
-      (event) {
-        _navigator.onStateChanged(_bloc, event);
+      (event) async {
+        await _navigator.onStateChanged(_bloc, event);
       },
     );
   }
 
-  void start() {
+  Future<void> start() async {
     if (_configuration.onStartBehaviour == NavigationBehaviour.noNavigation) {
       return;
     }
 
-    if (_configuration.onStartBehaviour == NavigationBehaviour.navigation ||
-        _bloc.shouldNavigationOnStart()) {
-      _navigator.onStart(_bloc);
+    if (_configuration.onStartBehaviour == NavigationBehaviour.navigation || _bloc.shouldNavigationOnStart()) {
+      await _navigator.onStart(_bloc);
     }
   }
 
-  void end() {
+  Future<void> end() async {
     if (_configuration.onEndBehaviour == NavigationBehaviour.noNavigation) {
       return;
     }
 
-    if (_configuration.onEndBehaviour == NavigationBehaviour.navigation ||
-        _bloc.shouldNavigationOnEnd()) {
-      _navigator.onEnd(_bloc);
+    if (_configuration.onEndBehaviour == NavigationBehaviour.navigation || _bloc.shouldNavigationOnEnd()) {
+      await _navigator.onEnd(_bloc);
     }
   }
 
-  void revive() {
+  Future<void> revive() async {
     if (_configuration.onReviveBehaviour == NavigationBehaviour.noNavigation) {
       return;
     }
 
-    if (_configuration.onReviveBehaviour == NavigationBehaviour.navigation ||
-        _bloc.shouldNavigationOnRevive()) {
-      _navigator.onRevive(_bloc);
+    if (_configuration.onReviveBehaviour == NavigationBehaviour.navigation || _bloc.shouldNavigationOnRevive()) {
+      await _navigator.onRevive(_bloc);
     }
   }
 

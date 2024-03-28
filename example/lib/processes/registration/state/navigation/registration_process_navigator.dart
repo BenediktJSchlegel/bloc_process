@@ -7,16 +7,14 @@ import '../../pages/region_selection_page.dart';
 import '../bloc/registration_process_bloc.dart';
 import '../bloc/registration_process_state.dart';
 
-class RegistrationProcessNavigator extends ProcessNavigator<
-    RegistrationProcessBloc, RegistrationProcessState> {
+class RegistrationProcessNavigator extends ProcessNavigator<RegistrationProcessBloc, RegistrationProcessState> {
   final BuildContext _context;
 
   final BasicInformationPage _basicInformationPage;
   final PasswordPage _passwordPage;
   final RegionSelectionPage _regionSelectionPage;
 
-  RegistrationProcessPages _currentPage =
-      RegistrationProcessPages.basicInformation;
+  RegistrationProcessPages _currentPage = RegistrationProcessPages.basicInformation;
 
   RegistrationProcessNavigator(
     this._context,
@@ -26,39 +24,34 @@ class RegistrationProcessNavigator extends ProcessNavigator<
         _regionSelectionPage = RegionSelectionPage(bloc);
 
   @override
-  void onStart(RegistrationProcessBloc bloc) {
-    Navigator.of(_context)
-        .push(MaterialPageRoute(builder: (context) => _basicInformationPage));
+  Future<void> onStart(RegistrationProcessBloc bloc) async {
+    Navigator.of(_context).push(MaterialPageRoute(builder: (context) => _basicInformationPage));
   }
 
   @override
-  void onEnd(RegistrationProcessBloc bloc) {
+  Future<void> onEnd(RegistrationProcessBloc bloc) async {
     Navigator.of(_context).pop();
   }
 
   @override
-  void onStateChanged(
-      RegistrationProcessBloc bloc, RegistrationProcessState state) {
+  Future<void> onStateChanged(RegistrationProcessBloc bloc, RegistrationProcessState state) async {
     if (state.page != _currentPage) {
       _currentPage = state.page;
 
       switch (state.page) {
         case RegistrationProcessPages.basicInformation:
-          Navigator.of(_context).pushReplacement(
-              MaterialPageRoute(builder: (context) => _basicInformationPage));
+          Navigator.of(_context).pushReplacement(MaterialPageRoute(builder: (context) => _basicInformationPage));
           break;
         case RegistrationProcessPages.password:
-          Navigator.of(_context).pushReplacement(
-              MaterialPageRoute(builder: (context) => _passwordPage));
+          Navigator.of(_context).pushReplacement(MaterialPageRoute(builder: (context) => _passwordPage));
           break;
         case RegistrationProcessPages.regionSelection:
-          Navigator.of(_context).pushReplacement(
-              MaterialPageRoute(builder: (context) => _regionSelectionPage));
+          Navigator.of(_context).pushReplacement(MaterialPageRoute(builder: (context) => _regionSelectionPage));
           break;
       }
     }
   }
 
   @override
-  void onRevive(RegistrationProcessBloc bloc) {}
+  Future<void> onRevive(RegistrationProcessBloc bloc) async {}
 }

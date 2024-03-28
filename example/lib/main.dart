@@ -76,8 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final twoController = ShowcaseController(
       bloc: two,
-      navigationBuilder: (ctx) =>
-          ShowcaseNavigator(two, ctx, pushReplaceStart: true),
+      navigationBuilder: (ctx) => ShowcaseNavigator(two, ctx, pushReplaceStart: true),
       persistAfterCompletion: false,
       navigationConfiguration: NavigationConfiguration(
         onStart: NavigationBehaviour.navigation,
@@ -88,8 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final threeController = ShowcaseController(
       bloc: three,
-      navigationBuilder: (ctx) =>
-          ShowcaseNavigator(three, ctx, pushReplaceStart: true),
+      navigationBuilder: (ctx) => ShowcaseNavigator(three, ctx, pushReplaceStart: true),
       persistAfterCompletion: false,
       navigationConfiguration: NavigationConfiguration(
         onStart: NavigationBehaviour.navigation,
@@ -98,8 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
-    ProcessChain<ShowcaseLinkInput, ShowcaseLinkOutput> chain =
-        ProcessChain<ShowcaseLinkInput, ShowcaseLinkOutput>(
+    ProcessChain<ShowcaseLinkInput, ShowcaseLinkOutput> chain = ProcessChain<ShowcaseLinkInput, ShowcaseLinkOutput>(
       links: [
         ShowcaseLink(
           oneController,
@@ -111,15 +108,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         ShowcaseLink(
           threeController,
-          outputTransformer: (input) => ShowcaseLinkOutput(
-              _buildInput(Colors.yellow), "_processName", "_action"),
+          outputTransformer: (input) => ShowcaseLinkOutput(_buildInput(Colors.yellow), "_processName", "_action"),
         ),
       ],
       context: context,
-      onEndCallback: (ShowcaseLinkOutput output) {},
     );
 
-    chain.start(_buildInput(Colors.orange));
+    chain.start(_buildInput(Colors.orange), (ShowcaseLinkOutput output) async {});
   }
 
   void _startProcessChainShowcase(BuildContext context) {
@@ -278,8 +273,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
-    ProcessChain<ShowcaseLinkInput, ShowcaseLinkOutput> chain =
-        ProcessChain<ShowcaseLinkInput, ShowcaseLinkOutput>(
+    ProcessChain<ShowcaseLinkInput, ShowcaseLinkOutput> chain = ProcessChain<ShowcaseLinkInput, ShowcaseLinkOutput>(
       links: [
         first,
         second,
@@ -366,23 +360,24 @@ class _MyHomePageState extends State<MyHomePage> {
         ShowcaseLink(sevenController, backOutReference: sixth),
       ],
       context: context,
-      onEndCallback: (_) => {print("finished process")},
     );
 
-    chain.start(ShowcaseLinkInput(
-      [],
-      "",
-      "First Process",
-      "Continue to second Process",
-      Colors.blue,
-      false,
-      false,
-      "",
-    ));
+    chain.start(
+        ShowcaseLinkInput(
+          [],
+          "",
+          "First Process",
+          "Continue to second Process",
+          Colors.blue,
+          false,
+          false,
+          "",
+        ), (_) async {
+      print("finished process");
+    });
   }
 
-  ShowcaseLinkInput _transformOutput(
-      ShowcaseLinkOutput output, String header, String text, Color color) {
+  ShowcaseLinkInput _transformOutput(ShowcaseLinkOutput output, String header, String text, Color color) {
     return ShowcaseLinkInput(
       output.input.previousProcessNames,
       output.processName,
@@ -409,7 +404,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _onRegistrationCompleted(RegistrationProcessResult result) {
+  Future<void> _onRegistrationCompleted(RegistrationProcessResult result) async {
     print("Done");
   }
 
@@ -425,18 +420,15 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             TextButton(
-              child: const Text("Process Demo",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              child: const Text("Process Demo", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               onPressed: () => _startProcess(context),
             ),
             TextButton(
-              child: const Text("ProcessChain Demo",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              child: const Text("ProcessChain Demo", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               onPressed: () => _startProcessChainShowcase(context),
             ),
             TextButton(
-              child: const Text("Multi Channel Demo",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              child: const Text("Multi Channel Demo", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               onPressed: () => _startMultiChannel(context),
             ),
             TextButton(
@@ -458,6 +450,6 @@ class _MyHomePageState extends State<MyHomePage> {
       navigationBuilder: (context) => MultiNavigator(context, bloc),
     );
 
-    controller.start(context, MultiInput(), (output) {});
+    controller.start(context, MultiInput(), (output) async {});
   }
 }

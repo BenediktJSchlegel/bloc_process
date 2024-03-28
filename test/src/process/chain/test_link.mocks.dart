@@ -3,12 +3,15 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:bloc_process/bloc_process.dart' as _i3;
-import 'package:flutter/cupertino.dart' as _i4;
+import 'dart:async' as _i4;
+
+import 'package:bloc_process/bloc_process.dart' as _i5;
+import 'package:flutter/cupertino.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 
-import '../io/test_input.dart' as _i5;
-import 'test_link.dart' as _i2;
+import '../io/test_input.dart' as _i7;
+import '../test_process_controller.dart' as _i2;
+import 'test_link.dart' as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -23,8 +26,19 @@ import 'test_link.dart' as _i2;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeType_0 extends _i1.SmartFake implements Type {
-  _FakeType_0(
+class _FakeTestProcessController_0 extends _i1.SmartFake
+    implements _i2.TestProcessController {
+  _FakeTestProcessController_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeType_1 extends _i1.SmartFake implements Type {
+  _FakeType_1(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -36,32 +50,32 @@ class _FakeType_0 extends _i1.SmartFake implements Type {
 /// A class which mocks [TestLink].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockTestLink extends _i1.Mock implements _i2.TestLink {
+class MockTestLink extends _i1.Mock implements _i3.TestLink {
   @override
   set onBackOut(
-          void Function(
-                  _i3.ProcessLink<
+          _i4.Future<void> Function(
+                  _i5.ProcessLink<
                       dynamic,
-                      _i3.ProcessBlocEvent,
-                      _i3.ProcessBlocState,
+                      _i5.ProcessBlocEvent,
+                      _i5.ProcessBlocState,
                       dynamic,
-                      _i3.ProcessBloc<dynamic, _i3.ProcessBlocEvent,
-                          _i3.ProcessBlocState, dynamic>,
-                      _i3.ProcessNavigator<
-                          _i3.ProcessBloc<dynamic, _i3.ProcessBlocEvent,
-                              _i3.ProcessBlocState, dynamic>,
-                          _i3.ProcessBlocState>,
-                      _i3.ProcessController<
+                      _i5.ProcessBloc<dynamic, _i5.ProcessBlocEvent,
+                          _i5.ProcessBlocState, dynamic>,
+                      _i5.ProcessNavigator<
+                          _i5.ProcessBloc<dynamic, _i5.ProcessBlocEvent,
+                              _i5.ProcessBlocState, dynamic>,
+                          _i5.ProcessBlocState>,
+                      _i5.ProcessController<
                           dynamic,
-                          _i3.ProcessBlocEvent,
-                          _i3.ProcessBlocState,
+                          _i5.ProcessBlocEvent,
+                          _i5.ProcessBlocState,
                           dynamic,
-                          _i3.ProcessBloc<dynamic, _i3.ProcessBlocEvent,
-                              _i3.ProcessBlocState, dynamic>,
-                          _i3.ProcessNavigator<
-                              _i3.ProcessBloc<dynamic, _i3.ProcessBlocEvent,
-                                  _i3.ProcessBlocState, dynamic>,
-                              _i3.ProcessBlocState>>>)?
+                          _i5.ProcessBloc<dynamic, _i5.ProcessBlocEvent,
+                              _i5.ProcessBlocState, dynamic>,
+                          _i5.ProcessNavigator<
+                              _i5.ProcessBloc<dynamic, _i5.ProcessBlocEvent,
+                                  _i5.ProcessBlocState, dynamic>,
+                              _i5.ProcessBlocState>>>)?
               _onBackOut) =>
       super.noSuchMethod(
         Invocation.setter(
@@ -73,28 +87,28 @@ class MockTestLink extends _i1.Mock implements _i2.TestLink {
 
   @override
   set backOutReference(
-          _i3.ProcessLink<
+          _i5.ProcessLink<
                   dynamic,
-                  _i3.ProcessBlocEvent,
-                  _i3.ProcessBlocState,
+                  _i5.ProcessBlocEvent,
+                  _i5.ProcessBlocState,
                   dynamic,
-                  _i3.ProcessBloc<dynamic, _i3.ProcessBlocEvent,
-                      _i3.ProcessBlocState, dynamic>,
-                  _i3.ProcessNavigator<
-                      _i3.ProcessBloc<dynamic, _i3.ProcessBlocEvent,
-                          _i3.ProcessBlocState, dynamic>,
-                      _i3.ProcessBlocState>,
-                  _i3.ProcessController<
+                  _i5.ProcessBloc<dynamic, _i5.ProcessBlocEvent,
+                      _i5.ProcessBlocState, dynamic>,
+                  _i5.ProcessNavigator<
+                      _i5.ProcessBloc<dynamic, _i5.ProcessBlocEvent,
+                          _i5.ProcessBlocState, dynamic>,
+                      _i5.ProcessBlocState>,
+                  _i5.ProcessController<
                       dynamic,
-                      _i3.ProcessBlocEvent,
-                      _i3.ProcessBlocState,
+                      _i5.ProcessBlocEvent,
+                      _i5.ProcessBlocState,
                       dynamic,
-                      _i3.ProcessBloc<dynamic, _i3.ProcessBlocEvent,
-                          _i3.ProcessBlocState, dynamic>,
-                      _i3.ProcessNavigator<
-                          _i3.ProcessBloc<dynamic, _i3.ProcessBlocEvent,
-                              _i3.ProcessBlocState, dynamic>,
-                          _i3.ProcessBlocState>>>?
+                      _i5.ProcessBloc<dynamic, _i5.ProcessBlocEvent,
+                          _i5.ProcessBlocState, dynamic>,
+                      _i5.ProcessNavigator<
+                          _i5.ProcessBloc<dynamic, _i5.ProcessBlocEvent,
+                              _i5.ProcessBlocState, dynamic>,
+                          _i5.ProcessBlocState>>>?
               _backOutReference) =>
       super.noSuchMethod(
         Invocation.setter(
@@ -105,7 +119,20 @@ class MockTestLink extends _i1.Mock implements _i2.TestLink {
       );
 
   @override
-  set onEnd(void Function(dynamic)? _onEnd) => super.noSuchMethod(
+  _i2.TestProcessController get controller => (super.noSuchMethod(
+        Invocation.getter(#controller),
+        returnValue: _FakeTestProcessController_0(
+          this,
+          Invocation.getter(#controller),
+        ),
+        returnValueForMissingStub: _FakeTestProcessController_0(
+          this,
+          Invocation.getter(#controller),
+        ),
+      ) as _i2.TestProcessController);
+
+  @override
+  set onEnd(_i4.Future<void> Function(dynamic)? _onEnd) => super.noSuchMethod(
         Invocation.setter(
           #onEnd,
           _onEnd,
@@ -116,11 +143,11 @@ class MockTestLink extends _i1.Mock implements _i2.TestLink {
   @override
   Type get inputType => (super.noSuchMethod(
         Invocation.getter(#inputType),
-        returnValue: _FakeType_0(
+        returnValue: _FakeType_1(
           this,
           Invocation.getter(#inputType),
         ),
-        returnValueForMissingStub: _FakeType_0(
+        returnValueForMissingStub: _FakeType_1(
           this,
           Invocation.getter(#inputType),
         ),
@@ -129,11 +156,11 @@ class MockTestLink extends _i1.Mock implements _i2.TestLink {
   @override
   Type get outputType => (super.noSuchMethod(
         Invocation.getter(#outputType),
-        returnValue: _FakeType_0(
+        returnValue: _FakeType_1(
           this,
           Invocation.getter(#outputType),
         ),
-        returnValueForMissingStub: _FakeType_0(
+        returnValueForMissingStub: _FakeType_1(
           this,
           Invocation.getter(#outputType),
         ),
@@ -141,8 +168,8 @@ class MockTestLink extends _i1.Mock implements _i2.TestLink {
 
   @override
   void start(
-    _i4.BuildContext? context,
-    _i5.TestInput? input,
+    _i6.BuildContext? context,
+    _i7.TestInput? input,
   ) =>
       super.noSuchMethod(
         Invocation.method(

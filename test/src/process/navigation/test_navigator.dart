@@ -7,22 +7,22 @@ import '../bloc/test_state.dart';
 @GenerateNiceMocks([MockSpec<TestNavigator>()])
 class TestNavigator implements ProcessNavigator<TestBloc, TestState> {
   @override
-  void onEnd(TestBloc bloc) {
+  Future<void> onEnd(TestBloc bloc) async {
     //
   }
 
   @override
-  void onRevive(TestBloc bloc) {
+  Future<void> onRevive(TestBloc bloc) async {
     //
   }
 
   @override
-  void onStart(TestBloc bloc) {
+  Future<void> onStart(TestBloc bloc) async {
     //
   }
 
   @override
-  void onStateChanged(TestBloc bloc, TestState state) {
+  Future<void> onStateChanged(TestBloc bloc, TestState state) async {
     //
   }
 }

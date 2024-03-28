@@ -52,7 +52,7 @@ void main() {
         navigationBuilder: (context) => navigator,
       );
 
-      controller.start(MockBuildContext(), TestInput(), (output) {});
+      controller.start(MockBuildContext(), TestInput(), (output) async {});
 
       bloc.add(TestEvent());
 
