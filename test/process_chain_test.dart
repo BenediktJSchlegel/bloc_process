@@ -19,7 +19,6 @@ void main() {
     test("Can be created", () {
       final chain = ProcessChain(
         context: MockBuildContext(),
-        onEndCallback: (output) {},
         links: [],
       );
 
@@ -29,7 +28,6 @@ void main() {
     test("Can be created with ProcessLink", () {
       final chain = ProcessChain(
         context: MockBuildContext(),
-        onEndCallback: (output) {},
         links: [MockTestLink()],
       );
 
@@ -44,11 +42,10 @@ void main() {
 
       final chain = ProcessChain(
         context: MockBuildContext(),
-        onEndCallback: (output) {},
         links: [link],
       );
 
-      chain.start(TestInput());
+      chain.start(TestInput(), (output) async {});
 
       verify(link.start(any, any));
     });
@@ -61,14 +58,13 @@ void main() {
 
       final chain = ProcessChain(
         context: MockBuildContext(),
-        onEndCallback: (output) {},
         links: [link],
       );
 
-      expect(() => chain.start(TestInput()), throwsA(isA<TypeIOError>()));
+      expect(() => chain.start(TestInput(), (output) async {}), throwsA(isA<TypeIOError>()));
     });
 
-    test("Starts next link when first completes", () {
+    test("Starts next link when first completes", () async {
       final bloc = TestBloc(TestState());
       final navigator = TestNavigator();
       final controller = TestProcessController(
@@ -88,20 +84,19 @@ void main() {
 
       final chain = ProcessChain(
         context: MockBuildContext(),
-        onEndCallback: (output) {},
         links: [firstLink, secondLink],
       );
 
-      chain.start(TestInput());
+      chain.start(TestInput(), (output) async {});
 
       bloc.complete(TestOutput());
+
+      await Future.delayed(const Duration(milliseconds: 250));
 
       verify(secondLink.start(any, any));
     });
 
-    test(
-        "Throws error when output of first link does not match input of second",
-        () {
+    test("Throws error when output of first link does not match input of second", () {
       final bloc = TestBloc(TestState());
       final navigator = TestNavigator();
       final controller = TestProcessController(
@@ -121,11 +116,10 @@ void main() {
 
       final chain = ProcessChain(
         context: MockBuildContext(),
-        onEndCallback: (output) {},
         links: [firstLink, secondLink],
       );
 
-      chain.start(TestInput());
+      chain.start(TestInput(), (output) async {});
 
       expect(() => bloc.complete(TestOutput()), throwsA(isA<TypeIOError>()));
     });
@@ -142,14 +136,10 @@ void main() {
 
       final chain = ProcessChain(
         context: MockBuildContext(),
-        onEndCallback: (output) {},
-        links: [
-          DecisionLink(
-              condition: (input) => true, then: firstLink, elseThen: secondLink)
-        ],
+        links: [DecisionLink(condition: (input) => true, then: firstLink, elseThen: secondLink)],
       );
 
-      chain.start(TestInput());
+      chain.start(TestInput(), (output) async {});
 
       verifyNever(secondLink.start(any, any));
       verify(firstLink.start(any, any));
@@ -167,16 +157,10 @@ void main() {
 
       final chain = ProcessChain(
         context: MockBuildContext(),
-        onEndCallback: (output) {},
-        links: [
-          DecisionLink(
-              condition: (input) => false,
-              then: firstLink,
-              elseThen: secondLink)
-        ],
+        links: [DecisionLink(condition: (input) => false, then: firstLink, elseThen: secondLink)],
       );
 
-      chain.start(TestInput());
+      chain.start(TestInput(), (output) async {});
 
       verifyNever(firstLink.start(any, any));
       verify(secondLink.start(any, any));
@@ -187,13 +171,12 @@ void main() {
 
       final chain = ProcessChain(
         context: MockBuildContext(),
-        onEndCallback: (output) {
-          called = true;
-        },
         links: [BreakoutLink()],
       );
 
-      chain.start(TestInput());
+      chain.start(TestInput(), (output) async {
+        called = true;
+      });
 
       expect(called, true);
     });

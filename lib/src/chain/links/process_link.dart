@@ -18,17 +18,17 @@ import '../../../bloc_process.dart';
 ///
 /// `TProcess` of type `ProcessController`: type of the controller started by this link
 class ProcessLink<
-    TInput,
-    TEvent extends ProcessBlocEvent,
-    TState extends ProcessBlocState,
-    TOutput,
-    TBloc extends ProcessBloc<TInput, TEvent, TState, TOutput>,
-    TNavigator extends ProcessNavigator<TBloc, TState>,
-    TProcess extends ProcessController<TInput, TEvent, TState, TOutput, TBloc,
-        TNavigator>> extends ChainLink<TInput, TOutput> {
+        TInput,
+        TEvent extends ProcessBlocEvent,
+        TState extends ProcessBlocState,
+        TOutput,
+        TBloc extends ProcessBloc<TInput, TEvent, TState, TOutput>,
+        TNavigator extends ProcessNavigator<TBloc, TState>,
+        TProcess extends ProcessController<TInput, TEvent, TState, TOutput, TBloc, TNavigator>>
+    extends ChainLink<TInput, TOutput> {
   final TProcess _controller;
 
-  void Function(ProcessLink callingLink)? onBackOut;
+  Future<void> Function(ProcessLink callingLink)? onBackOut;
 
   ProcessLink? backOutReference;
 
@@ -49,7 +49,11 @@ class ProcessLink<
   @override
   void start(BuildContext context, TInput input) {
     _controller.start(
-        context, input, _onControllerCompleted, _onControlledBackedOut);
+      context,
+      input,
+      _onControllerCompleted,
+      _onControlledBackedOut,
+    );
   }
 
   void revive() {
@@ -62,16 +66,16 @@ class ProcessLink<
 
   bool isStarted() => _controller.isStarted();
 
-  void _onControllerCompleted(TOutput output) {
+  Future<void> _onControllerCompleted(TOutput output) async {
     if (super.outputTransformer != null) {
-      onEnd!.call(super.outputTransformer!.call(output));
+      await onEnd!.call(super.outputTransformer!.call(output));
       return;
     }
 
-    onEnd!.call(output);
+    await onEnd!.call(output);
   }
 
-  void _onControlledBackedOut() {
-    onBackOut?.call(this);
+  Future<void> _onControlledBackedOut() async {
+    await onBackOut?.call(this);
   }
 }

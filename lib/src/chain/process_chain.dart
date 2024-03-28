@@ -13,7 +13,7 @@ import '../exceptions/canceled_outside_process_link_error.dart';
 class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
   final BuildContext _context;
   final List<ChainLink> _links;
-  final void Function(TOutput output) _onEndCallback;
+  late final Future<void> Function(TOutput output) _onEndCallback;
 
   int _index = 0;
   bool _hasStarted = false;
@@ -23,20 +23,19 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
   ProcessChain({
     required List<ChainLink> links,
     required BuildContext context,
-    required void Function(TOutput output) onEndCallback,
   })  : _links = links,
-        _context = context,
-        _onEndCallback = onEndCallback;
+        _context = context;
 
   /// Starts the first process using the provided [input].
   ///
   /// This may only be called once per `ProcessChain`.
   /// Calling this more than once will cause a `ProcessAlreadyStartedError` to be thrown.
-  void start(TInput input) {
+  void start(TInput input, Future<void> Function(TOutput output) onEndCallback) {
     if (_hasStarted) {
       throw ProcessAlreadyStartedError();
     }
 
+    _onEndCallback = onEndCallback;
     _hasStarted = true;
 
     _setup();
@@ -82,14 +81,14 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
     _links[_index].start(_context, lastOutput);
   }
 
-  void _onLinkCompleted(dynamic output, bool breakout) {
+  Future<void> _onLinkCompleted(dynamic output, bool breakout) async {
     if (_isLastLink() || breakout) {
       if (!isOutputType(output)) {
         throw TypeIOError(output, TOutput);
       }
 
       _closePersistingProcessLinks();
-      _onEndCallback.call(output as TOutput);
+      await _onEndCallback.call(output as TOutput);
     } else {
       _index++;
       _next(output);
@@ -98,14 +97,14 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
 
   /// prematurely closes the process chain using the given `processOutput` to close the current process
   /// and the `chainOutput` to close the ProcessChain
-  void cancel(TOutput output) {
+  Future<void> cancel(TOutput output) async {
     final ChainLink currentLink = _links[_index];
 
     if (currentLink is ProcessLink) {
       currentLink.controller.cancelWithoutOutput();
 
       _closePersistingProcessLinks();
-      _onEndCallback.call(output);
+      await _onEndCallback.call(output);
     } else if (currentLink is DecisionLink) {
       ProcessLink? processLink;
 
@@ -119,16 +118,16 @@ class ProcessChain<TInput, TOutput> with InputOutputTyped<TInput, TOutput> {
         throw CanceledOutsideProcessLinkError();
       }
 
-      processLink.controller.cancelWithoutOutput();
+      await processLink.controller.cancelWithoutOutput();
 
       _closePersistingProcessLinks();
-      _onEndCallback.call(output);
+      await _onEndCallback.call(output);
     } else {
       throw CanceledOutsideProcessLinkError();
     }
   }
 
-  void _onBackOut(ProcessLink callingLink) {
+  Future<void> _onBackOut(ProcessLink callingLink) async {
     if (callingLink.backOutReference == null) {
       throw NoBackOutReferenceError();
     }

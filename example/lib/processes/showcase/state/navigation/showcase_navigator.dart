@@ -17,29 +17,27 @@ class ShowcaseNavigator extends ProcessNavigator<ShowcaseBloc, ShowcaseState> {
         _pushReplaceStart = pushReplaceStart;
 
   @override
-  void onEnd(ShowcaseBloc bloc) {
+  Future<void> onEnd(ShowcaseBloc bloc) async {
     Navigator.of(_context).pop();
   }
 
   @override
-  void onStart(ShowcaseBloc bloc) {
+  Future<void> onStart(ShowcaseBloc bloc) async {
     if (_pushReplaceStart) {
-      Navigator.of(_context)
-          .pushReplacement(MaterialPageRoute(builder: (context) => _page));
+      await Navigator.of(_context).pushReplacement(MaterialPageRoute(builder: (context) => _page));
     } else {
-      Navigator.of(_context)
-          .push(MaterialPageRoute(builder: (context) => _page));
+      await Navigator.of(_context).push(MaterialPageRoute(builder: (context) => _page));
     }
   }
 
   @override
-  void onStateChanged(ShowcaseBloc bloc, ShowcaseState state) {
+  Future<void> onStateChanged(ShowcaseBloc bloc, ShowcaseState state) async {
     // ignore for this example
     // navigation based on state goes here!
   }
 
   @override
-  void onRevive(ShowcaseBloc bloc) {
-    Navigator.of(_context).push(MaterialPageRoute(builder: (context) => _page));
+  Future<void> onRevive(ShowcaseBloc bloc) async {
+    await Navigator.of(_context).push(MaterialPageRoute(builder: (context) => _page));
   }
 }

@@ -57,14 +57,17 @@ class MockTestBloc extends _i1.Mock implements _i3.TestBloc {
       ) as _i4.Stream<_i5.ErrorEvent>);
 
   @override
-  void Function(_i6.TestOutput) get completeCallback => (super.noSuchMethod(
+  _i4.Future<void> Function(_i6.TestOutput) get completeCallback =>
+      (super.noSuchMethod(
         Invocation.getter(#completeCallback),
-        returnValue: (_i6.TestOutput value) {},
-        returnValueForMissingStub: (_i6.TestOutput value) {},
-      ) as void Function(_i6.TestOutput));
+        returnValue: (_i6.TestOutput value) => _i4.Future<void>.value(),
+        returnValueForMissingStub: (_i6.TestOutput value) =>
+            _i4.Future<void>.value(),
+      ) as _i4.Future<void> Function(_i6.TestOutput));
 
   @override
-  set completeCallback(void Function(_i6.TestOutput)? _completeCallback) =>
+  set completeCallback(
+          _i4.Future<void> Function(_i6.TestOutput)? _completeCallback) =>
       super.noSuchMethod(
         Invocation.setter(
           #completeCallback,
@@ -74,7 +77,8 @@ class MockTestBloc extends _i1.Mock implements _i3.TestBloc {
       );
 
   @override
-  set backOutCallback(void Function()? _backOutCallback) => super.noSuchMethod(
+  set backOutCallback(_i4.Future<void> Function()? _backOutCallback) =>
+      super.noSuchMethod(
         Invocation.setter(
           #backOutCallback,
           _backOutCallback,
@@ -186,27 +190,29 @@ class MockTestBloc extends _i1.Mock implements _i3.TestBloc {
       );
 
   @override
-  void complete(_i6.TestOutput? value) => super.noSuchMethod(
+  _i4.Future<void> complete(_i6.TestOutput? value) => (super.noSuchMethod(
         Invocation.method(
           #complete,
           [value],
         ),
-        returnValueForMissingStub: null,
-      );
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
-  void backOut() => super.noSuchMethod(
+  _i4.Future<void> backOut() => (super.noSuchMethod(
         Invocation.method(
           #backOut,
           [],
         ),
-        returnValueForMissingStub: null,
-      );
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
   void mountCallbacks(
-    void Function(_i6.TestOutput)? callback,
-    void Function()? backOut,
+    _i4.Future<void> Function(_i6.TestOutput)? callback,
+    _i4.Future<void> Function()? backOut,
   ) =>
       super.noSuchMethod(
         Invocation.method(

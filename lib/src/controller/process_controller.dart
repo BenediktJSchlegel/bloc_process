@@ -31,18 +31,17 @@ import '../navigation/process_navigator.dart';
 ///
 /// This class  may be extended to abstract away the many type declarations
 class ProcessController<
-        TInput,
-        TEvent extends ProcessBlocEvent,
-        TState extends ProcessBlocState,
-        TOutput,
-        TBloc extends ProcessBloc<TInput, TEvent, TState, TOutput>,
-        TNavigator extends ProcessNavigator<TBloc, TState>>
-    extends BlocDependant<TBloc> {
+    TInput,
+    TEvent extends ProcessBlocEvent,
+    TState extends ProcessBlocState,
+    TOutput,
+    TBloc extends ProcessBloc<TInput, TEvent, TState, TOutput>,
+    TNavigator extends ProcessNavigator<TBloc, TState>> extends BlocDependant<TBloc> {
   final NavigationHandler _navigationHandler;
   final ProcessNavigator Function(BuildContext context) _navigationBuilder;
 
-  late final void Function(TOutput value) _completedCallback;
-  late final void Function()? _backOutCallback;
+  late final Future<void> Function(TOutput value) _completedCallback;
+  late final Future<void> Function()? _backOutCallback;
 
   final bool _persistAfterCompletion;
 
@@ -52,8 +51,7 @@ class ProcessController<
   ProcessController({
     required TBloc bloc,
     required ProcessNavigator Function(BuildContext context) navigationBuilder,
-    NavigationConfiguration navigationConfiguration =
-        const NavigationConfiguration.defaultConfiguration(),
+    NavigationConfiguration navigationConfiguration = const NavigationConfiguration.defaultConfiguration(),
     bool persistAfterCompletion = false,
   })  : _navigationHandler = NavigationHandler(bloc, navigationConfiguration),
         _navigationBuilder = navigationBuilder,
@@ -69,8 +67,8 @@ class ProcessController<
   void start(
     BuildContext context,
     TInput input,
-    void Function(TOutput output) callback, [
-    void Function()? backOut,
+    Future<void> Function(TOutput output) callback, [
+    Future<void> Function()? backOut,
   ]) {
     if (_hasBeenStarted && !_allowRestart) {
       throw ProcessAlreadyStartedError();
@@ -91,7 +89,7 @@ class ProcessController<
 
   /// Restarts a process that has previously been finished, retaining the state from before.
   /// This calls the `revive()` method in the `TNavigator`
-  void revive() {
+  void revive() async {
     if (!_hasBeenStarted) {
       throw ProcessNotStartedError();
     }
@@ -100,7 +98,7 @@ class ProcessController<
       throw ProcessAlreadyCompletedError();
     }
 
-    _navigationHandler.revive();
+    await _navigationHandler.revive();
   }
 
   /// fully closes the process, even if `persistAfterCompletion` is true.
@@ -109,17 +107,17 @@ class ProcessController<
   }
 
   /// prematurely terminates the process using the given `output`
-  void cancel(TOutput output) {
-    _onComplete(output);
+  Future<void> cancel(TOutput output) async {
+    await _onComplete(output);
   }
 
   /// prematurely terminates the process without calling the `completedCallback`
-  void cancelWithoutOutput() {
-    _close();
+  Future<void> cancelWithoutOutput() async {
+    await _close();
   }
 
-  void _onBackOut() {
-    _navigationHandler.end();
+  Future<void> _onBackOut() async {
+    await _navigationHandler.end();
     _navigationHandler.unmount();
 
     _allowRestart = true;
@@ -127,14 +125,14 @@ class ProcessController<
     _backOutCallback?.call();
   }
 
-  void _onComplete(TOutput value) {
-    _close();
+  Future<void> _onComplete(TOutput value) async {
+    await _close();
 
-    _completedCallback.call(value);
+    await _completedCallback.call(value);
   }
 
-  void _close() {
-    _navigationHandler.end();
+  Future<void> _close() async {
+    await _navigationHandler.end();
 
     if (!_persistAfterCompletion) {
       _closeDependencies();

@@ -7,7 +7,7 @@ class DecisionLink<TInput, TOutput> extends ChainLink<TInput, TOutput> {
   final ChainLink _then;
   final ChainLink _elseThen;
 
-  void Function(dynamic output)? onBreakout;
+  Future<void> Function(dynamic output)? onBreakout;
 
   /// Creates a new `DecisionLink`. If [condition] evaluates to `true`, the [then] `ChainLink` is started.
   /// otherwise the [elseThen] `ChainLink` is started. Input may be transformed by [inputTransformer], Output may be transformed by [outputTransformer]
@@ -57,32 +57,31 @@ class DecisionLink<TInput, TOutput> extends ChainLink<TInput, TOutput> {
     return input;
   }
 
-  void _onLinkCompleted(dynamic output, bool breakout) {
-    dynamic finalOutput =
-        outputTransformer != null ? outputTransformer!.call(output) : output;
+  Future<void> _onLinkCompleted(dynamic output, bool breakout) async {
+    dynamic finalOutput = outputTransformer != null ? outputTransformer!.call(output) : output;
 
     if (!isOutputType(finalOutput)) {
       throw TypeIOError(finalOutput, TOutput);
     }
 
-    _onCompleted(output as TOutput, breakout);
+    await _onCompleted(output as TOutput, breakout);
   }
 
-  void _onCompleted(TOutput output, bool breakout) {
+  Future<void> _onCompleted(TOutput output, bool breakout) async {
     if (super.outputTransformer != null) {
-      _callEnd(super.outputTransformer!.call(output), breakout);
+      await _callEnd(super.outputTransformer!.call(output), breakout);
 
       return;
     }
 
-    _callEnd(output, breakout);
+    await _callEnd(output, breakout);
   }
 
-  void _callEnd(TOutput output, bool breakout) {
+  Future<void> _callEnd(TOutput output, bool breakout) async {
     if (breakout) {
-      onBreakout!.call(output);
+      await onBreakout!.call(output);
     } else {
-      onEnd!.call(output);
+      await onEnd!.call(output);
     }
   }
 }
