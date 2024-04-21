@@ -31,6 +31,16 @@ class _BasicInformationPageState extends State<BasicInformationPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              ProcessBlocBusyBuilder(
+                bloc: widget.bloc,
+                builder: (busy) {
+                  if (busy) {
+                    return const CircularProgressIndicator();
+                  }
+
+                  return Container();
+                },
+              ),
               IconButton(
                 icon: const Icon(
                   Icons.error,
@@ -44,6 +54,13 @@ class _BasicInformationPageState extends State<BasicInformationPage> {
                   size: 34,
                 ),
                 onPressed: () => _onContinuePressed(),
+              ),
+              IconButton(
+                icon: const Icon(
+                  Icons.hourglass_bottom,
+                  size: 34,
+                ),
+                onPressed: () => _onLongEventPressed(),
               ),
             ],
           ),
@@ -72,5 +89,9 @@ class _BasicInformationPageState extends State<BasicInformationPage> {
 
   void _onErrorPressed() {
     widget.bloc.add(ThrowErrorEvent("Error during basic information"));
+  }
+
+  _onLongEventPressed() {
+    widget.bloc.add(LongEventSubmittedEvent());
   }
 }

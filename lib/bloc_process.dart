@@ -12,6 +12,8 @@ export 'src/bloc/bloc_channel.dart';
 export 'src/widgets/process_bloc_consumer.dart';
 export 'src/widgets/process_bloc_error_listener.dart';
 export 'src/widgets/process_bloc_listener.dart';
+export 'src/widgets/process_bloc_busy_listener.dart';
+export 'src/widgets/process_bloc_busy_builder.dart';
 
 export 'src/route/stateless_bloc_route.dart';
 export 'src/route/stateful_bloc_route.dart';

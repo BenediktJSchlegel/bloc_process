@@ -1,3 +1,7 @@
+## 0.3.1
+implemented busy stream
+added busy builder and listener widgets
+
 ## 0.3.0
 switch of callbacks to async API
 completing ProcessBloc's is now awaitable

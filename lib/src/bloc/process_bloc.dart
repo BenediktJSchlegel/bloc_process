@@ -1,4 +1,4 @@
-import 'package:bloc_process/src/bloc/effect_producing_bloc.dart';
+import 'package:bloc_process/src/bloc/busy_setting_bloc.dart';
 import 'package:bloc_process/src/bloc/interfaces/process_bloc_event.dart';
 import 'package:bloc_process/src/bloc/interfaces/process_bloc_state.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,11 +14,8 @@ import 'package:flutter/cupertino.dart';
 /// `TState` of Type `ProcessBlocState`: the type of the state object
 ///
 /// `TOutput`: the type of the process output
-abstract class ProcessBloc<
-    TInput,
-    TEvent extends ProcessBlocEvent,
-    TState extends ProcessBlocState,
-    TOutput> extends EffectProducingBloc<TEvent, TState, TOutput> {
+abstract class ProcessBloc<TInput, TEvent extends ProcessBlocEvent, TState extends ProcessBlocState, TOutput>
+    extends BusySettingBloc<TEvent, TState, TOutput> {
   ProcessBloc(super.initialState);
 
   /// Called when `ProcessController.start()` gets called. [input] corresponds to the input to said method.
