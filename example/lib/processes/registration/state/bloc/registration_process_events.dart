@@ -19,3 +19,5 @@ class UserRoleChangedEvent extends RegistrationProcessEvent {
 
   UserRoleChangedEvent(this.role);
 }
+
+class LongEventSubmittedEvent extends RegistrationProcessEvent {}

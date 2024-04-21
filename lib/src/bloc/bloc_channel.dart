@@ -2,9 +2,7 @@ import 'package:bloc_process/bloc_process.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-abstract class BlocChannel<
-    TEvent extends ProcessBlocEvent,
-    TState extends ProcessBlocState,
+abstract class BlocChannel<TEvent extends ProcessBlocEvent, TState extends ProcessBlocState,
     TBloc extends MultiChannelProcessBloc<dynamic, dynamic, TState, dynamic>> {
   final TBloc _bloc;
 
@@ -21,6 +19,16 @@ abstract class BlocChannel<
 
   void add(TEvent event) {
     _bloc.add(event);
+  }
+
+  @protected
+  void emitEffect(Effect effect) {
+    _bloc.emitEffect(effect);
+  }
+
+  @protected
+  void complete(dynamic output) {
+    _bloc.complete(output);
   }
 
   @protected
