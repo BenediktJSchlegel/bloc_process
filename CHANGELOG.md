@@ -1,3 +1,6 @@
+## 0.3.2
+fixed an issue that caused the navigator to not be properly re-mounted when restarting a process
+
 ## 0.3.1
 implemented busy stream
 added busy builder and listener widgets
