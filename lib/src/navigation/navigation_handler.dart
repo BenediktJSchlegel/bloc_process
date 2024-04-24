@@ -13,9 +13,11 @@ class NavigationHandler {
 
   NavigationHandler(this._bloc, this._configuration);
 
-  void mount(ProcessNavigator navigator, Stream stream) {
+  void init(ProcessNavigator navigator) {
     _navigator = navigator;
+  }
 
+  void mount(Stream stream) {
     _blocStreamSubscription = stream.listen(
       (event) async {
         await _navigator.onStateChanged(_bloc, event);

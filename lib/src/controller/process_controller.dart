@@ -79,8 +79,10 @@ class ProcessController<
       _backOutCallback = backOut;
       _hasBeenStarted = true;
 
-      _navigationHandler.mount(_navigationBuilder.call(context), bloc.stream);
+      _navigationHandler.init(_navigationBuilder.call(context));
     }
+
+    _navigationHandler.mount(bloc.stream);
 
     bloc.initialize(input);
 

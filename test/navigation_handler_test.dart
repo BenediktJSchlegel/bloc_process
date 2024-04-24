@@ -23,7 +23,8 @@ void main() {
 
       final handler = NavigationHandler(bloc, config);
 
-      handler.mount(MockTestNavigator(), bloc.stream);
+      handler.init(MockTestNavigator());
+      handler.mount(bloc.stream);
 
       expect(handler, isNotNull);
     });
@@ -35,7 +36,8 @@ void main() {
       final handler = NavigationHandler(bloc, config);
       final navigator = MockTestNavigator();
 
-      handler.mount(navigator, bloc.stream);
+      handler.init(navigator);
+      handler.mount(bloc.stream);
       handler.start();
 
       verify(navigator.onStart(bloc));
@@ -48,7 +50,8 @@ void main() {
       final handler = NavigationHandler(bloc, config);
       final navigator = MockTestNavigator();
 
-      handler.mount(navigator, bloc.stream);
+      handler.init(navigator);
+      handler.mount(bloc.stream);
 
       handler.start();
       handler.end();
@@ -64,7 +67,8 @@ void main() {
       final handler = NavigationHandler(bloc, config);
       final navigator = MockTestNavigator();
 
-      handler.mount(navigator, bloc.stream);
+      handler.init(navigator);
+      handler.mount(bloc.stream);
 
       handler.start();
       handler.end();
@@ -86,7 +90,8 @@ void main() {
       final handler = NavigationHandler(bloc, config);
       final navigator = MockTestNavigator();
 
-      handler.mount(navigator, bloc.stream);
+      handler.init(navigator);
+      handler.mount(bloc.stream);
 
       handler.start();
       handler.end();
@@ -108,7 +113,8 @@ void main() {
       final handler = NavigationHandler(bloc, config);
       final navigator = MockTestNavigator();
 
-      handler.mount(navigator, bloc.stream);
+      handler.init(navigator);
+      handler.mount(bloc.stream);
 
       when(bloc.shouldNavigationOnStart()).thenReturn(true);
       when(bloc.shouldNavigationOnEnd()).thenReturn(true);
@@ -134,7 +140,8 @@ void main() {
       final handler = NavigationHandler(bloc, config);
       final navigator = MockTestNavigator();
 
-      handler.mount(navigator, bloc.stream);
+      handler.init(navigator);
+      handler.mount(bloc.stream);
 
       when(bloc.shouldNavigationOnStart()).thenReturn(false);
       when(bloc.shouldNavigationOnEnd()).thenReturn(false);
@@ -160,7 +167,8 @@ void main() {
       final handler = NavigationHandler(bloc, config);
       final navigator = MockTestNavigator();
 
-      handler.mount(navigator, bloc.stream);
+      handler.init(navigator);
+      handler.mount(bloc.stream);
 
       handler.start();
       handler.end();
