@@ -8,6 +8,9 @@ export 'src/bloc/interfaces/process_bloc_state.dart';
 export 'src/bloc/process_bloc.dart';
 export 'src/bloc/multi_channel_process_bloc.dart';
 export 'src/bloc/bloc_channel.dart';
+export 'src/bloc/busy_setting_bloc.dart';
+export 'src/bloc/effect_producing_bloc.dart';
+export 'src/bloc/error_producing_bloc.dart';
 
 export 'src/widgets/process_bloc_consumer.dart';
 export 'src/widgets/process_bloc_error_listener.dart';

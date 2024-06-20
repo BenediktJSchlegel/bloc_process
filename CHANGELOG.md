@@ -1,3 +1,6 @@
+## 0.3.3
+exposed bloc sub-implementations for use in non process scenarios
+
 ## 0.3.2
 fixed an issue that caused the navigator to not be properly re-mounted when restarting a process
 
