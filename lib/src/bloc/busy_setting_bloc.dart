@@ -51,7 +51,9 @@ class BusySettingBloc<TEvent extends ProcessBlocEvent, TState extends ProcessBlo
   void _emitBusy(bool busy) {
     _isBusy = busy;
 
-    _controller.add(busy);
+    if(!_controller.isClosed){
+      _controller.add(busy);
+    }
   }
 
   @override
