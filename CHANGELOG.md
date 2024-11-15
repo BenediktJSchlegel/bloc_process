@@ -1,3 +1,6 @@
+## 0.3.4
+bugfix
+
 ## 0.3.3
 exposed bloc sub-implementations for use in non process scenarios
 
