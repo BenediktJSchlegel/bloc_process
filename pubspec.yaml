@@ -1,6 +1,6 @@
 name: bloc_process
 description: "A package that extends the BloC pattern to fully support linear processes as well as chaining of such processes."
-version: 0.3.4
+version: 0.4.0
 repository: https://github.com/BenediktJSchlegel/bloc_process
 
 environment:
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_bloc: ^8.1.3
+  flutter_bloc: ^9.1.1
 
 dev_dependencies:
   flutter_test:

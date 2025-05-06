@@ -1,3 +1,6 @@
+## 0.4.0
+increase supported flutter_bloc version
+
 ## 0.3.4
 bugfix
 
